@@ -15,8 +15,8 @@ kbs() {
     while (( $# )); do
         case $1 in
             -l|--list)     level=A ;;
-            -ll|--more)    level=B ;;
-            -lll|--all)    level=C ;;
+            -v|--verbose)  level=B ;;
+            -vv|--all)     level=C ;;
             -k|--keymap)   shift; keymap=$1 ;;
             --keymap=*)    keymap=${1#*=} ;;
             --no-examples) examples=0 ;;
@@ -85,8 +85,8 @@ Usage: kbs [LEVEL] [options]
 Levels:
   (default)        non-default bindings + synthetic rows, enriched & pretty
   -l, --list       same as default (level A)
-  -ll, --more      add notable built-in keys (Tab, arrows, Ctrl-A/E, ...)
-  -lll, --all      every binding in the active keymap
+  -v, --verbose    add notable built-in keys (Tab, arrows, Ctrl-A/E, ...)
+  -vv, --all       every binding in the active keymap
 
 Options:
   -k, --keymap N   force a keymap (emacs|vi-insert|vi-command)
@@ -105,7 +105,7 @@ NAME
      kbs — display and learn this shell's interactive key bindings
 
 SYNOPSIS
-     kbs [-l | -ll | -lll] [-k keymap] [--no-examples] [--no-color]
+     kbs [-l | -v | -vv] [-k keymap] [--no-examples] [--no-color]
      kbs -h | --help | --man
 
 DESCRIPTION
@@ -119,8 +119,8 @@ DESCRIPTION
 OPTIONS
      (no args)      Level A: non-default bindings plus synthetic rows.
      -l, --list     Explicit level A (the default).
-     -ll, --more    Level B: level A plus notable built-in keys.
-     -lll, --all    Level C: every binding in the active keymap.
+     -v, --verbose  Level B: level A plus notable built-in keys.
+     -vv, --all     Level C: every binding in the active keymap.
      -k, --keymap N Force keymap emacs, vi-insert, or vi-command (default: auto).
      --no-examples  Suppress the teaching examples footer.
      --no-color     Disable colour (also auto-off when piped or NO_COLOR is set).
@@ -157,7 +157,7 @@ EXIT STATUS
 
 EXAMPLES
      kbs              Show what your custom keys do.
-     kbs -lll         Audit every binding in the active keymap.
+     kbs -vv          Audit every binding in the active keymap.
      vim **<Tab>      Use fzf's completion trigger to pick a file.
 
 SEE ALSO

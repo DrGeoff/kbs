@@ -1,4 +1,4 @@
-# kbs — keybinding teaching tool
+# kbs — KeyBinding Shortcuts
 
 `kbs` reads your shell's **live** key bindings and prints a friendly table so you can
 learn and remember the obscure shortcuts your shell provides (atuin, fzf, ble.sh,
@@ -15,12 +15,35 @@ make install        # copies to ~/.local/lib/kbs, adds a loader to ~/.bashrc.d
 
 Open a new shell, then run `kbs`.
 
+### Prerequisite: your `~/.bashrc` must source `~/.bashrc.d/`
+
+`make install` drops a loader at `~/.bashrc.d/kbs`. That loader is only picked up if your
+`~/.bashrc` already sources the `~/.bashrc.d/` directory. Many distributions (e.g. Fedora)
+ship a `~/.bashrc` that does this by default — it contains something like:
+
+```sh
+# User specific aliases and functions
+if [ -d ~/.bashrc.d ]; then
+    for rc in ~/.bashrc.d/*; do
+        [ -f "$rc" ] && . "$rc"
+    done
+    unset rc
+fi
+```
+
+If your `~/.bashrc` has no such block, either add the snippet above, or skip the loader
+and source kbs directly from `~/.bashrc`:
+
+```sh
+source ~/.local/lib/kbs/kbs.bash
+```
+
 ## Usage
 
 ```
 kbs              # non-default bindings + the ** trigger, with examples
-kbs -ll          # + notable built-in keys
-kbs -lll         # every binding in the active keymap
+kbs -v           # + notable built-in keys
+kbs -vv          # every binding in the active keymap
 kbs --man        # full reference
 kbs --help       # quick usage
 ```
