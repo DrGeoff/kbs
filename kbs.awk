@@ -1,0 +1,184 @@
+# kbs renderer. Reads a section-marked keybinding dump on stdin, classifies each
+# binding via rules.dat, and emits either rows (key|source|action) or a table.
+# POSIX awk (no gawk extensions). See kbs.bash for how the dump is produced.
+
+function trim(s) { sub(/^[ \t]+/, "", s); sub(/[ \t]+$/, "", s); return s }
+
+function load_rules(f,   line, n, a, k) {
+  while ((getline line < f) > 0) {
+    if (line ~ /^[ \t]*#/ || line ~ /^[ \t]*$/) continue
+    n = split(line, a, /\|/)
+    for (k = 1; k <= n; k++) a[k] = trim(a[k])
+    if (a[1] == "rule") {
+      rn++
+      rtype[rn]=a[2]; rkey[rn]=a[3]; rtarget[rn]=a[4]; rmacro[rn]=a[5]; rsrc[rn]=a[6]; ract[rn]=a[7]
+    } else if (a[1] == "bykey") {
+      if (!((a[2], a[3]) in bykey)) bykey[a[2], a[3]] = a[4]
+    } else if (a[1] == "synth") {
+      sn++; s_src[sn]=a[2]; s_key[sn]=a[3]; s_act[sn]=a[4]
+    } else if (a[1] == "builtin") {
+      if (!(a[2] in binact)) { binact[a[2]] = a[3]; bis[a[2]] = 1 }
+    } else if (a[1] == "example") {
+      en++; e_src[en]=a[2]; e_text[en]=a[3]
+    }
+  }
+  close(f)
+}
+
+function arrow(c) { return ARROW[c] }
+
+function canon(k,   lk, n) {
+  k = trim(k)
+  if ((substr(k,1,1)=="'" && substr(k,length(k),1)=="'") || \
+      (substr(k,1,1)=="\"" && substr(k,length(k),1)=="\"")) k = substr(k, 2, length(k)-2)
+  if (k == "") return ""
+  if (index(k, "C-_") > 0) return ""                       # internal dispatch keys
+  if (k ~ /^\\e(\[|O)[A-H]$/) return arrow(substr(k, length(k), 1))
+  if (k ~ /^\\e\[[0-9]+~$/) { n=k; gsub(/[^0-9]/, "", n); return TILDE[n] }
+  if (k=="\\t" || k=="\\C-i" || k=="C-i" || k=="TAB") return "Tab"
+  if (k=="\\r" || k=="\\C-m" || k=="C-m" || k=="RET") return "Enter"
+  if (k ~ /^\\C-.$/) return "Ctrl-" toupper(substr(k, length(k), 1))
+  if (k ~ /^\\e.$/)  return "Alt-"  toupper(substr(k, length(k), 1))
+  if (k ~ /^(SS3|CSI|ESC \[|ESC O) [A-H]$/) return arrow(substr(k, length(k), 1))
+  lk = tolower(k)
+  if (lk in NAMED) return NAMED[lk]
+  if (k ~ /^C-.$/) return "Ctrl-" toupper(substr(k, 3, 1))
+  if (k ~ /^M-.$/) return "Alt-"  toupper(substr(k, 3, 1))
+  if (index(k, " ") > 0) return ""                          # multi-token compound
+  return k
+}
+
+# Parse a ble-bind line into P_km, P_type, P_key, P_target; sets P_ok.
+function parse_ble(line,   rest, p, q, ty) {
+  P_ok = 0
+  if (substr(line, 1, 13) != "ble-bind -m '") return
+  rest = substr(line, 14)
+  p = index(rest, "'"); if (!p) return
+  P_km = substr(rest, 1, p-1)
+  rest = substr(rest, p+1)                 # " -s C-r '...'"
+  if (substr(rest, 1, 2) != " -") return
+  ty = substr(rest, 3, 1)
+  rest = substr(rest, 4)                   # " C-r '...'"
+  sub(/^[ \t]+/, "", rest)
+  if (substr(rest, 1, 1) == "'") {
+    rest = substr(rest, 2); q = index(rest, "'")
+    P_key = substr(rest, 1, q-1); rest = substr(rest, q+1)
+  } else {
+    q = index(rest, " ")
+    if (q) { P_key = substr(rest, 1, q-1); rest = substr(rest, q+1) }
+    else   { P_key = rest; rest = "" }
+  }
+  P_type = ty; P_target = trim(rest); P_ok = 1
+}
+
+# Parse a readline line for section flag (-p/-s/-X) into P_key(seq)/P_type/P_target.
+function parse_readline(line, flag,   rest, q) {
+  P_ok = 0
+  if (substr(line, 1, 1) != "\"") return
+  rest = substr(line, 2); q = index(rest, "\""); if (!q) return
+  P_key = substr(rest, 1, q-1); rest = substr(rest, q+1)
+  if (flag == "-X") {
+    sub(/^[ \t]+/, "", rest)
+    if (substr(rest, 1, 1) == "\"") { rest = substr(rest, 2); q = index(rest, "\""); if (q) rest = substr(rest, 1, q-1) }
+    P_type = "x"; P_target = rest
+  } else {
+    sub(/^:[ \t]*/, "", rest)
+    if (substr(rest, 1, 1) == "\"") { rest = substr(rest, 2); q = index(rest, "\""); if (q) rest = substr(rest, 1, q-1) }
+    P_type = (flag == "-s") ? "s" : "f"; P_target = rest
+  }
+  P_km = "readline"; P_ok = 1
+}
+
+function classify(km, ty, key, tgt,   i) {
+  for (i = 1; i <= rn; i++) {
+    if (rtype[i] != "" && rtype[i] != "*" && rtype[i] != ty) continue
+    if (rkey[i]  != "" && rkey[i]  != "*" && rkey[i]  != key) continue
+    if (rtarget[i] != "" && rtarget[i] != "*" && index(tgt, rtarget[i]) == 0) continue
+    if (rmacro[i]  != "" && rmacro[i]  != "*" && index(tgt, rmacro[i])  == 0) continue
+    CL_src = rsrc[i]
+    CL_act = ract[i]
+    if (CL_act == "@bykey") CL_act = ((CL_src, key) in bykey) ? bykey[CL_src, key] : tgt
+    if (CL_act == "") CL_act = tgt
+    return
+  }
+  if (index(tgt, "fzf")   > 0) { CL_src="fzf";    CL_act=tgt; return }
+  if (index(tgt, "atuin") > 0) { CL_src="atuin";  CL_act=tgt; return }
+  if (km == "readline" && ty == "f") { CL_src="readline"; CL_act=tgt; return }
+  if (tgt != "") { CL_src="ble.sh"; CL_act=tgt; return }
+  CL_src="other"; CL_act="(internal)"
+}
+
+BEGIN {
+  ARROW["A"]="Up"; ARROW["B"]="Down"; ARROW["C"]="Right"; ARROW["D"]="Left"; ARROW["F"]="End"; ARROW["H"]="Home"
+  TILDE["1"]="Home"; TILDE["2"]="Insert"; TILDE["3"]="Delete"; TILDE["4"]="End"; TILDE["5"]="PageUp"; TILDE["6"]="PageDown"
+  NAMED["up"]="Up"; NAMED["down"]="Down"; NAMED["left"]="Left"; NAMED["right"]="Right"
+  NAMED["home"]="Home"; NAMED["end"]="End"; NAMED["insert"]="Insert"; NAMED["delete"]="Delete"
+  NAMED["prior"]="PageUp"; NAMED["next"]="PageDown"; NAMED["tab"]="Tab"
+  RANK["s"]=0; RANK["x"]=1; RANK["c"]=2; RANK["f"]=3
+  ORD["atuin"]=1; ORD["fzf"]=2; ORD["ble.sh"]=3; ORD["readline"]=4; ORD["shell"]=5; ORD["other"]=6
+  if (userrules != "") load_rules(userrules)
+  load_rules(rules)
+  KMFILTER = (backend == "readline") ? "readline" : keymap
+}
+
+/^## / {
+  n = split(substr($0, 4), a, /[ \t]+/)
+  if (a[1] == "ble")      { SEC=1; SKIND="ble" }
+  else if (a[1] == "readline") { SEC=1; SKIND="readline"; SFLAG=(n>=2?a[2]:"-p") }
+  else SEC=0
+  next
+}
+/^[ \t]*$/ { next }
+{
+  if (!SEC) next
+  if (SKIND == "ble") { parse_ble($0); if (!P_ok) next }
+  else                { parse_readline($0, SFLAG); if (!P_ok) next }
+  key = canon(P_key)
+  if (key == "" || P_target == "") next
+  if (P_km != KMFILTER) next
+  g = P_km SUBSEP key
+  r = RANK[P_type]
+  if (!(g in Wrank)) { Worder[++Wn] = g; Wrank[g]=r; Wty[g]=P_type; Wtg[g]=P_target; Wkm[g]=P_km; Wkey[g]=key }
+  else if (r < Wrank[g]) { Wrank[g]=r; Wty[g]=P_type; Wtg[g]=P_target; Wkm[g]=P_km; Wkey[g]=key }
+}
+
+END {
+  nr = 0
+  for (i = 1; i <= Wn; i++) {
+    g = Worder[i]; ty = Wty[g]; key = Wkey[g]; km = Wkm[g]; tgt = Wtg[g]
+    nd = (ty == "s" || ty == "x" || ty == "c")
+    bi = (key in bis)
+    if (level == "A" && !nd) continue
+    if (level == "B" && !(nd || bi)) continue
+    classify(km, ty, key, tgt)
+    src = CL_src; act = CL_act
+    if (!nd && (key in binact)) act = binact[key]
+    nr++; rk[nr]=key; rs[nr]=src; ra[nr]=act
+  }
+  # insertion sort by (ORD[source], key)
+  for (i = 2; i <= nr; i++) {
+    kk=rk[i]; ss=rs[i]; aa=ra[i]; oi=(rs[i] in ORD)?ORD[rs[i]]:99
+    j = i - 1
+    while (j >= 1 && ( (rs[j] in ORD ? ORD[rs[j]] : 99) > oi || ((rs[j] in ORD ? ORD[rs[j]] : 99) == oi && rk[j] > kk) )) {
+      rk[j+1]=rk[j]; rs[j+1]=rs[j]; ra[j+1]=ra[j]; j--
+    }
+    rk[j+1]=kk; rs[j+1]=ss; ra[j+1]=aa
+  }
+  # synthetic rows
+  nsy = 0
+  for (i = 1; i <= sn; i++) { sk = s_key[i]; gsub(/\{trigger\}/, trigger, sk); nsy++; yk[nsy]=sk; ys[nsy]=s_src[i]; ya[nsy]=s_act[i] }
+  # final order: synthetic first (A/B), last (C)
+  nf = 0
+  if (level != "C") for (i=1;i<=nsy;i++){ nf++; fk[nf]=yk[i]; fs[nf]=ys[i]; fa[nf]=ya[i] }
+  for (i=1;i<=nr;i++){ nf++; fk[nf]=rk[i]; fs[nf]=rs[i]; fa[nf]=ra[i] }
+  if (level == "C") for (i=1;i<=nsy;i++){ nf++; fk[nf]=yk[i]; fs[nf]=ys[i]; fa[nf]=ya[i] }
+
+  if (emit == "rows") { for (i=1;i<=nf;i++) print fk[i] "|" fs[i] "|" fa[i]; exit (nf>0?0:1) }
+  if (nf == 0) { print "kbs: no bindings found (no interactive keymap could be read)." > "/dev/stderr"; exit 1 }
+  render_table()
+  if (examples == 1) render_examples()
+}
+
+# --- rendering (stubbed; implemented in Task 4 / Task 5) ---
+function render_table() { }
+function render_examples() { }

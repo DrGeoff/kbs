@@ -34,5 +34,33 @@ assert_eq() {  # <description> <expected> <actual>
 # ---- smoke ----
 assert_contains "kbs.awk exists and runs" "Ctrl-R" < <(ble_dump | render rows ble emacs A 0 0)
 
+# ---- Task 3: rows pipeline ----
+B_A=$(ble_dump | render rows ble emacs A 0 0)
+B_B=$(ble_dump | render rows ble emacs B 0 0)
+B_C=$(ble_dump | render rows ble emacs C 0 0)
+R_A=$(rl_dump  | render rows readline readline A 0 0)
+
+printf '%s' "$B_A" | assert_contains "ble: Ctrl-R is atuin" "Ctrl-R|atuin"
+printf '%s' "$B_A" | assert_contains "ble: Up is atuin"     "Up|atuin"
+printf '%s' "$B_A" | assert_contains "ble: Ctrl-T is fzf"   "Ctrl-T|fzf"
+printf '%s' "$B_A" | assert_contains "ble: Alt-C is fzf"    "Alt-C|fzf"
+printf '%s' "$B_A" | assert_contains "ble: Ctrl-Z is ble.sh" "Ctrl-Z|ble.sh"
+printf '%s' "$B_A" | assert_contains "ble: synthetic trigger row" "**<Tab>|fzf"
+printf '%s' "$B_A" | assert_not_contains "ble: no atuin internals" "__atuin_widget_run"
+printf '%s' "$B_A" | assert_not_contains "ble: no C-_ internal keys" "C-_"
+
+printf '%s' "$R_A" | assert_contains "readline: Ctrl-T is fzf" "Ctrl-T|fzf"
+printf '%s' "$R_A" | assert_contains "readline: Alt-C is fzf"  "Alt-C|fzf"
+printf '%s' "$R_A" | assert_not_contains "readline: no internals" "__atuin_widget_run"
+
+# Up must appear exactly once (atuin wins over the shadowed default)
+ups=$(printf '%s\n' "$B_B" | grep -c '^Up|')
+assert_eq "ble level B: Up appears once" "1" "$ups"
+
+# level counts increase A < B <= C
+ca=$(printf '%s\n' "$B_A" | grep -c '|'); cb=$(printf '%s\n' "$B_B" | grep -c '|'); cc=$(printf '%s\n' "$B_C" | grep -c '|')
+[ "$ca" -lt "$cb" ] && ok || bad "level A($ca) < B($cb)"
+[ "$cb" -le "$cc" ] && ok || bad "level B($cb) <= C($cc)"
+
 printf '\n%d passed, %d failed\n' "$PASS" "$FAIL"
 [ "$FAIL" -eq 0 ]
