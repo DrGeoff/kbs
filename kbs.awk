@@ -4,6 +4,12 @@
 
 function trim(s) { sub(/^[ \t]+/, "", s); sub(/[ \t]+$/, "", s); return s }
 
+function strip_quotes(s) {
+  if ((substr(s,1,1)=="'" && substr(s,length(s),1)=="'") || \
+      (substr(s,1,1)=="\"" && substr(s,length(s),1)=="\"")) return substr(s, 2, length(s)-2)
+  return s
+}
+
 function load_rules(f,   line, n, a, k) {
   while ((getline line < f) > 0) {
     if (line ~ /^[ \t]*#/ || line ~ /^[ \t]*$/) continue
@@ -29,8 +35,7 @@ function arrow(c) { return ARROW[c] }
 
 function canon(k,   lk, n) {
   k = trim(k)
-  if ((substr(k,1,1)=="'" && substr(k,length(k),1)=="'") || \
-      (substr(k,1,1)=="\"" && substr(k,length(k),1)=="\"")) k = substr(k, 2, length(k)-2)
+  k = strip_quotes(k)
   if (k == "") return ""
   if (index(k, "C-_") > 0) return ""                       # internal dispatch keys
   if (k ~ /^\\e(\[|O)[A-H]$/) return arrow(substr(k, length(k), 1))
@@ -58,6 +63,7 @@ function parse_ble(line,   rest, p, q, ty) {
   rest = substr(rest, p+1)                 # " -s C-r '...'"
   if (substr(rest, 1, 2) != " -") return
   ty = substr(rest, 3, 1)
+  if (ty != "f" && ty != "c" && ty != "s" && ty != "x") return
   rest = substr(rest, 4)                   # " C-r '...'"
   sub(/^[ \t]+/, "", rest)
   if (substr(rest, 1, 1) == "'") {
@@ -68,7 +74,7 @@ function parse_ble(line,   rest, p, q, ty) {
     if (q) { P_key = substr(rest, 1, q-1); rest = substr(rest, q+1) }
     else   { P_key = rest; rest = "" }
   }
-  P_type = ty; P_target = trim(rest); P_ok = 1
+  P_type = ty; P_target = strip_quotes(trim(rest)); P_ok = 1
 }
 
 # Parse a readline line for section flag (-p/-s/-X) into P_key(seq)/P_type/P_target.
@@ -114,6 +120,8 @@ BEGIN {
   NAMED["up"]="Up"; NAMED["down"]="Down"; NAMED["left"]="Left"; NAMED["right"]="Right"
   NAMED["home"]="Home"; NAMED["end"]="End"; NAMED["insert"]="Insert"; NAMED["delete"]="Delete"
   NAMED["prior"]="PageUp"; NAMED["next"]="PageDown"; NAMED["tab"]="Tab"
+  NAMED["nul"]="Ctrl-@"; NAMED["bs"]="Backspace"; NAMED["del"]="Backspace"
+  NAMED["sp"]="Space"; NAMED["esc"]="Escape"; NAMED["ret"]="Enter"
   RANK["s"]=0; RANK["x"]=1; RANK["c"]=2; RANK["f"]=3
   ORD["atuin"]=1; ORD["fzf"]=2; ORD["ble.sh"]=3; ORD["readline"]=4; ORD["shell"]=5; ORD["other"]=6
   if (userrules != "") load_rules(userrules)

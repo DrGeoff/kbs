@@ -33,7 +33,7 @@ assert_not_contains() {
   case $hay in *"$needle"*) bad "$desc (unexpected: $needle)" ;; *) ok ;; esac
 }
 assert_eq() {  # <description> <expected> <actual>
-  if [ "$2" = "$3" ]; then ok; else bad "$3 (expected $2) -- $1"; fi
+  if [ "$2" = "$3" ]; then ok; else bad "$1: expected '$2', got '$3'"; fi
 }
 
 # ---- smoke ----
@@ -61,6 +61,11 @@ printf '%s' "$R_A" | assert_not_contains "readline: no internals" "__atuin_widge
 # Up must appear exactly once (atuin wins over the shadowed default)
 ups=$(printf '%s\n' "$B_B" | grep -c '^Up|')
 assert_eq "ble level B: Up appears once" "1" "$ups"
+
+printf '%s' "$R_A" | assert_contains "readline: Up via -s macro is atuin" "Up|atuin"
+printf '%s' "$B_C" | assert_not_contains "level C: targets not single-quoted" "|'"
+printf '%s' "$B_C" | assert_contains "level C: BS normalised to Backspace" "Backspace"
+printf '%s' "$B_C" | assert_not_contains "level C: no raw BS name" $'\nBS|'
 
 # level counts increase A < B <= C
 ca=$(printf '%s\n' "$B_A" | grep -c '|'); cb=$(printf '%s\n' "$B_B" | grep -c '|'); cc=$(printf '%s\n' "$B_C" | grep -c '|')
