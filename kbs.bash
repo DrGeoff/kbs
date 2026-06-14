@@ -1,4 +1,4 @@
-# kbs — show this shell's LIVE interactive key bindings as a teaching table
+# kbs — KeyBinding Shortcuts: show this shell's LIVE interactive key bindings
 # (atuin · fzf · ble.sh · readline). Must be a shell function: reading the keymap
 # needs ble-bind (ble.sh function) / bind (bash builtin), which a child process
 # cannot call. Renderer + rules sit beside this file. See `kbs --man`.
@@ -164,6 +164,6 @@ SEE ALSO
      atuin(1), fzf(1), ble.sh (https://github.com/akinomyoga/ble.sh)
 
 AUTHOR
-     kbs — a teaching tool for shell key bindings.
+     kbs — KeyBinding Shortcuts for the interactive shell.
 EOF
 }
