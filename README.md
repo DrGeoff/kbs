@@ -90,10 +90,11 @@ tests/run.sh        # run the test suite against the committed fixtures
 ./uninstall.sh      # remove the install (lib dir + loader)
 ```
 
-Shell scripts are linted with [shellcheck](https://www.shellcheck.net/) via a
-`prek` / pre-commit hook — enable it once with `prek install` (config in
-`.pre-commit-config.yaml`). GitHub Actions (`.github/workflows/ci.yml`) runs shellcheck
-and the test suite on every push and pull request.
+Linting runs via a `prek` / pre-commit hook (config in `.pre-commit-config.yaml`) —
+enable it once with `prek install`. Shell scripts are checked with
+[shellcheck](https://www.shellcheck.net/), and `kbs.awk` with `gawk --lint`
+(`tests/awk-lint.sh`). GitHub Actions (`.github/workflows/ci.yml`) runs both linters and
+the test suite on every push and pull request.
 
 ## License
 
