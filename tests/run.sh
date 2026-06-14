@@ -90,6 +90,17 @@ assert_eq "all box lines share one width" "1" "$WIDTHS"
 printf '%s' "$(ble_dump | render table ble emacs A 1 0)" | assert_contains "colour on -> ANSI" $'\033[38;5'
 printf '%s' "$T" | assert_not_contains "colour off -> no ANSI" $'\033['
 
+# level-A title shows the verbosity hint instead of "level A"
+printf '%s' "$T" | assert_contains    "level A title shows hint" "use -v or -vv for more bindings"
+printf '%s' "$T" | assert_not_contains "level A title drops 'level A'" "level A"
+# level B keeps its plain label
+printf '%s' "$(ble_dump | render table ble emacs B 0 0)" | assert_contains "level B title unchanged" "level B"
+# title that is wider than the columns must not break the box (readline level A is the tight case)
+RLT=$(rl_dump | render table readline readline A 0 0)
+printf '%s' "$RLT" | assert_contains "readline A title shows hint" "use -v or -vv for more bindings"
+RLW=$(printf '%s\n' "$RLT" | grep -E '^[┌│├└]' | LC_ALL=C.UTF-8 awk '{print length}' | sort -u | wc -l)
+assert_eq "readline A box stays width-consistent with long title" "1" "$RLW"
+
 # ---- Task 5: examples footer ----
 WITH=$(ble_dump | render table ble emacs A 0 1)
 WITHOUT=$(ble_dump | render table ble emacs A 0 0)

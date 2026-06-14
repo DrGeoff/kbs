@@ -198,10 +198,12 @@ END {
 function rep(n, ch,   s) { s=""; while (n-- > 0) s = s ch; return s }
 function pad(s, w) { return s rep(w - length(s), " ") }
 
-function render_table(   i, kw, sw, aw, total, B, R, sc, title, j) {
+function render_table(   i, kw, sw, aw, total, B, R, sc, title, lvltext, tl) {
   B = (color == 1) ? "\033[1m" : ""
   R = (color == 1) ? "\033[0m" : ""
-  title = "Keybindings - " ((backend=="readline")?"readline":"ble.sh") " - level " level
+  # The default (level A) view nudges toward the more-verbose levels.
+  lvltext = (level == "A") ? "use -v or -vv for more bindings" : ("level " level)
+  title = "Keybindings - " ((backend=="readline")?"readline":"ble.sh") " - " lvltext
   kw = length("Key"); sw = length("Source"); aw = length("Action")
   for (i = 1; i <= nf; i++) {
     if (length(fk[i]) > kw) kw = length(fk[i])
@@ -209,6 +211,10 @@ function render_table(   i, kw, sw, aw, total, B, R, sc, title, j) {
     if (length(fa[i]) > aw) aw = length(fa[i])
   }
   total = kw + sw + aw + 8
+  # Ensure the title fits: if it's wider than the columns, widen the action column
+  # (keeps the 3-column divider alignment and the box width-correct).
+  tl = length(title)
+  if (tl + 2 > total) { aw += tl + 2 - total; total = kw + sw + aw + 8 }
   print ""
   print "┌" rep(total, "─") "┐"
   print "│ " B pad(title, total - 2) R " │"

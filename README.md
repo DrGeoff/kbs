@@ -5,6 +5,32 @@ learn and remember the obscure shortcuts your shell provides (atuin, fzf, ble.sh
 readline). It works under both ble.sh and plain readline, and is zero-dependency:
 just bash + awk.
 
+## Example output
+
+Running `kbs` in a ble.sh shell with atuin and fzf loaded (the table is colour-coded by
+source on a real terminal):
+
+```
+┌───────────────────────────────────────────────────────────────────┐
+│ Keybindings - ble.sh - use -v or -vv for more bindings            │
+├─────────┬────────┬────────────────────────────────────────────────┤
+│ Key     │ Source │ Action                                         │
+├─────────┼────────┼────────────────────────────────────────────────┤
+│ **<Tab> │ fzf    │ Fuzzy-completion trigger                       │
+│ Ctrl-R  │ atuin  │ History search (fuzzy, synced across machines) │
+│ Up      │ atuin  │ History up-search by prefix                    │
+│ Alt-C   │ fzf    │ cd into a chosen sub-directory                 │
+│ Ctrl-T  │ fzf    │ Pick file(s); insert path at cursor            │
+│ Ctrl-Z  │ ble.sh │ Resume the most recent suspended job (fg)      │
+└─────────┴────────┴────────────────────────────────────────────────┘
+Examples  - fzf ** trigger: type ** where you'd hit Tab
+  vim **<Tab>      fuzzy-pick a file to edit
+  cd **<Tab>       fuzzy-pick a sub-directory
+  ssh **<Tab>      fuzzy-pick a host
+  kill -9 **<Tab>  fuzzy-pick a process by PID
+  Ctrl-R          search synced history; type to filter, Enter to run
+```
+
 ## Install
 
 ```sh
@@ -46,33 +72,6 @@ kbs -v           # + notable built-in keys
 kbs -vv          # every binding in the active keymap
 kbs --man        # full reference
 kbs --help       # quick usage
-```
-
-## Example output
-
-Running `kbs` in a ble.sh shell with atuin and fzf loaded (the table is colour-coded by
-source on a real terminal):
-
-```
-┌───────────────────────────────────────────────────────────────────┐
-│ Keybindings - ble.sh - level A                                    │
-├─────────┬────────┬────────────────────────────────────────────────┤
-│ Key     │ Source │ Action                                         │
-├─────────┼────────┼────────────────────────────────────────────────┤
-│ **<Tab> │ fzf    │ Fuzzy-completion trigger                       │
-│ Ctrl-R  │ atuin  │ History search (fuzzy, synced across machines) │
-│ Up      │ atuin  │ History up-search by prefix                    │
-│ Alt-C   │ fzf    │ cd into a chosen sub-directory                 │
-│ Ctrl-T  │ fzf    │ Pick file(s); insert path at cursor            │
-│ Ctrl-Z  │ ble.sh │ Resume the most recent suspended job (fg)      │
-└─────────┴────────┴────────────────────────────────────────────────┘
-
-Examples  - fzf ** trigger: type ** where you'd hit Tab
-  vim **<Tab>      fuzzy-pick a file to edit
-  cd **<Tab>       fuzzy-pick a sub-directory
-  ssh **<Tab>      fuzzy-pick a host
-  kill -9 **<Tab>  fuzzy-pick a process by PID
-  Ctrl-R          search synced history; type to filter, Enter to run
 ```
 
 ## How it works
