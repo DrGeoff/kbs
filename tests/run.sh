@@ -86,6 +86,13 @@ assert_eq "all box lines share one width" "1" "$WIDTHS"
 printf '%s' "$(ble_dump | render table ble emacs A 1 0)" | assert_contains "colour on -> ANSI" $'\033[38;5'
 printf '%s' "$T" | assert_not_contains "colour off -> no ANSI" $'\033['
 
+# ---- Task 5: examples footer ----
+WITH=$(ble_dump | render table ble emacs A 0 1)
+WITHOUT=$(ble_dump | render table ble emacs A 0 0)
+printf '%s' "$WITH"    | assert_contains   "examples shown when examples=1" "vim **<Tab>"
+printf '%s' "$WITHOUT" | assert_not_contains "examples hidden when examples=0" "vim **<Tab>"
+printf '%s' "$WITH"    | assert_contains   "examples header" "Examples"
+
 # grep -c already prints 0 (and exits 1) on no matches; capture directly.
 PASS=$(grep -c '^p' "$RESULTS"); FAIL=$(grep -c '^f' "$RESULTS")
 printf '\n%d passed, %d failed\n' "$PASS" "$FAIL"

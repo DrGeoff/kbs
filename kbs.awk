@@ -217,4 +217,15 @@ function render_table(   i, kw, sw, aw, total, B, R, sc, title, j) {
   }
   print "└" rep(kw+2,"─") "┴" rep(sw+2,"─") "┴" rep(aw+2,"─") "┘"
 }
-function render_examples() { }
+function render_examples(   i, DIM, B, R, present, has) {
+  DIM = (color == 1) ? "\033[2m" : ""
+  B   = (color == 1) ? "\033[1m" : ""
+  R   = (color == 1) ? "\033[0m" : ""
+  for (i = 1; i <= nf; i++) present[fs[i]] = 1
+  has = 0
+  for (i = 1; i <= en; i++) if (e_src[i] in present) { has = 1; break }
+  if (!has) return
+  print ""
+  print B "Examples" R DIM "  - fzf ** trigger: type ** where you'd hit Tab" R
+  for (i = 1; i <= en; i++) if (e_src[i] in present) print "  " DIM e_text[i] R
+}
