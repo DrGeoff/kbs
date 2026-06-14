@@ -93,6 +93,18 @@ printf '%s' "$WITH"    | assert_contains   "examples shown when examples=1" "vim
 printf '%s' "$WITHOUT" | assert_not_contains "examples hidden when examples=0" "vim **<Tab>"
 printf '%s' "$WITH"    | assert_contains   "examples header" "Examples"
 
+# ---- Task 6: kbs.bash help/man (no live shell needed) ----
+HELP=$(bash -c "source '$ROOT/kbs.bash'; kbs --help" 2>&1)
+MAN=$(bash -c  "source '$ROOT/kbs.bash'; kbs --man --no-color" 2>&1)
+printf '%s' "$HELP" | assert_contains "help shows usage" "Usage: kbs"
+printf '%s' "$MAN"  | assert_contains "man NAME"        "NAME"
+printf '%s' "$MAN"  | assert_contains "man SYNOPSIS"    "SYNOPSIS"
+printf '%s' "$MAN"  | assert_contains "man RECOGNITION" "RECOGNITION"
+printf '%s' "$MAN"  | assert_contains "man FILES"       "FILES"
+# unknown option exits 2
+bash -c "source '$ROOT/kbs.bash'; kbs --bogus" >/dev/null 2>&1
+assert_eq "unknown option exits 2" "2" "$?"
+
 # grep -c already prints 0 (and exits 1) on no matches; capture directly.
 PASS=$(grep -c '^p' "$RESULTS"); FAIL=$(grep -c '^f' "$RESULTS")
 printf '\n%d passed, %d failed\n' "$PASS" "$FAIL"
