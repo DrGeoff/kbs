@@ -49,6 +49,9 @@ function canon(k,   lk, n) {
   if (lk in NAMED) return NAMED[lk]
   if (k ~ /^C-.$/) return "Ctrl-" toupper(substr(k, 3, 1))
   if (k ~ /^M-.$/) return "Alt-"  toupper(substr(k, 3, 1))
+  # backslash-escaped modified keys, e.g. ble's M-\' (Alt-') or C-\' (Ctrl-')
+  if (k ~ /^C-\\.$/) return "Ctrl-" toupper(substr(k, length(k), 1))
+  if (k ~ /^M-\\.$/) return "Alt-"  toupper(substr(k, length(k), 1))
   if (index(k, " ") > 0) return ""                          # multi-token compound
   return k
 }

@@ -70,6 +70,9 @@ printf '%s' "$B_C" | assert_not_contains "level C: no raw BS name" $'\nBS|'
 # only the genuine M-' binding to sabbrev-expand should remain.
 sab=$(printf '%s\n' "$B_C" | grep -c 'sabbrev-expand')
 assert_eq "level C: embedded-quote chord dropped (1 sabbrev row)" "1" "$sab"
+# backslash-escaped modified key M-\' is normalised to Alt-' (not shown raw)
+printf '%s' "$B_C" | assert_contains    "level C: M-\\' shown as Alt-'" "Alt-'|ble.sh|sabbrev-expand"
+printf '%s' "$B_C" | assert_not_contains "level C: no raw M-\\' key" "M-\\'"
 
 # level counts increase A < B <= C
 ca=$(printf '%s\n' "$B_A" | grep -c '|'); cb=$(printf '%s\n' "$B_B" | grep -c '|'); cc=$(printf '%s\n' "$B_C" | grep -c '|')
@@ -126,6 +129,36 @@ CUSTOM=$(ble_dump | "$AWK" -v rules="$ROOT/rules.dat" -v userrules=/dev/null \
          -v color=0 -v examples=1 -v emit=table -f "$ROOT/kbs.awk")
 printf '%s' "$CUSTOM" | assert_contains "examples header uses custom trigger" "fzf @@ trigger"
 printf '%s' "$CUSTOM" | assert_contains "synth row uses custom trigger" "@@<Tab>"
+
+# ---- pager smoke test: --man on a TTY must pass a multi-word $PAGER without word-split.
+# Needs a pty, so it runs only where python3 is available (skipped otherwise).
+if command -v python3 >/dev/null 2>&1; then
+  POUT=$(python3 - "$ROOT" <<'PYEOF'
+import os, pty, select, sys
+root = sys.argv[1]; buf = [b""]
+pid, fd = pty.fork()
+if pid == 0:
+    os.environ["PAGER"] = "cat -n"   # multi-word: the old quoted "${PAGER:-...}" broke on this
+    os.execvp("bash", ["bash", "--norc", "-c", "source %s/kbs.bash; kbs --man" % root])
+else:
+    while True:
+        r, _, _ = select.select([fd], [], [], 2.0)
+        if not r: break
+        try: d = os.read(fd, 4096)
+        except OSError: break
+        if not d: break
+        buf[0] += d
+    sys.stdout.write(buf[0].decode(errors="replace"))
+PYEOF
+)
+  case $POUT in
+    *"command not found"*) bad "pager smoke: multi-word PAGER word-split (command not found)" ;;
+    *NAME*) ok ;;
+    *) bad "pager smoke: man content not seen through pager" ;;
+  esac
+else
+  printf 'skip: pager smoke test (python3 not available)\n' >&2
+fi
 
 # grep -c already prints 0 (and exits 1) on no matches; capture directly.
 PASS=$(grep -c '^p' "$RESULTS"); FAIL=$(grep -c '^f' "$RESULTS")
