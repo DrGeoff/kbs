@@ -66,6 +66,10 @@ printf '%s' "$R_A" | assert_contains "readline: Up via -s macro is atuin" "Up|at
 printf '%s' "$B_C" | assert_not_contains "level C: targets not single-quoted" "|'"
 printf '%s' "$B_C" | assert_contains "level C: BS normalised to Backspace" "Backspace"
 printf '%s' "$B_C" | assert_not_contains "level C: no raw BS name" $'\nBS|'
+# embedded-quote chord key (e.g. "C-x '") must be dropped, not mangled into Ctrl-X:
+# only the genuine M-' binding to sabbrev-expand should remain.
+sab=$(printf '%s\n' "$B_C" | grep -c 'sabbrev-expand')
+assert_eq "level C: embedded-quote chord dropped (1 sabbrev row)" "1" "$sab"
 
 # level counts increase A < B <= C
 ca=$(printf '%s\n' "$B_A" | grep -c '|'); cb=$(printf '%s\n' "$B_B" | grep -c '|'); cc=$(printf '%s\n' "$B_C" | grep -c '|')

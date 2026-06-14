@@ -74,6 +74,10 @@ function parse_ble(line,   rest, p, q, ty) {
     if (q) { P_key = substr(rest, 1, q-1); rest = substr(rest, q+1) }
     else   { P_key = rest; rest = "" }
   }
+  # ble escapes an embedded single-quote in a key as '...'\''...': after the first
+  # closing quote the leftover begins with \' — meaning the key is a compound chord
+  # (e.g. "C-x '") we don't represent. Drop it rather than emit a mangled key.
+  if (substr(rest, 1, 2) == "\\'") return
   P_type = ty; P_target = strip_quotes(trim(rest)); P_ok = 1
 }
 
