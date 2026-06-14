@@ -32,10 +32,19 @@ kbs() {
     if [[ ! -f $awk_f ]]; then
         printf 'kbs: renderer not found at %s\n' "$awk_f" >&2; return 1
     fi
+    if [[ ! -f $rules ]]; then
+        printf 'kbs: rules file not found at %s\n' "$rules" >&2; return 1
+    fi
 
     if [[ $mode == help ]]; then _kbs_help; return 0; fi
     if [[ $mode == man ]]; then
-        if [[ -t 1 && $color != never ]]; then _kbs_man | "${PAGER:-less -R}"; else _kbs_man; fi
+        if [[ -t 1 && $color != never ]]; then
+            # shellcheck disable=SC2206  # intentional split: PAGER may be "less -R"
+            local -a _pager=( ${PAGER:-less -R} )
+            _kbs_man | "${_pager[@]}"
+        else
+            _kbs_man
+        fi
         return 0
     fi
 

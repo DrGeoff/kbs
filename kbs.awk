@@ -226,6 +226,6 @@ function render_examples(   i, DIM, B, R, present, has) {
   for (i = 1; i <= en; i++) if (e_src[i] in present) { has = 1; break }
   if (!has) return
   print ""
-  print B "Examples" R DIM "  - fzf ** trigger: type ** where you'd hit Tab" R
+  print B "Examples" R DIM "  - fzf " trigger " trigger: type " trigger " where you'd hit Tab" R
   for (i = 1; i <= en; i++) if (e_src[i] in present) print "  " DIM e_text[i] R
 }

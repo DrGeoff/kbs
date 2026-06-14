@@ -105,6 +105,13 @@ printf '%s' "$MAN"  | assert_contains "man FILES"       "FILES"
 bash -c "source '$ROOT/kbs.bash'; kbs --bogus" >/dev/null 2>&1
 assert_eq "unknown option exits 2" "2" "$?"
 
+# ---- regression: examples + synth use the live trigger ----
+CUSTOM=$(ble_dump | "$AWK" -v rules="$ROOT/rules.dat" -v userrules=/dev/null \
+         -v backend=ble -v keymap=emacs -v level=A -v trigger='@@' \
+         -v color=0 -v examples=1 -v emit=table -f "$ROOT/kbs.awk")
+printf '%s' "$CUSTOM" | assert_contains "examples header uses custom trigger" "fzf @@ trigger"
+printf '%s' "$CUSTOM" | assert_contains "synth row uses custom trigger" "@@<Tab>"
+
 # grep -c already prints 0 (and exits 1) on no matches; capture directly.
 PASS=$(grep -c '^p' "$RESULTS"); FAIL=$(grep -c '^f' "$RESULTS")
 printf '\n%d passed, %d failed\n' "$PASS" "$FAIL"

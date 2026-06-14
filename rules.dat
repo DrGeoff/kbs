@@ -14,7 +14,7 @@
 rule    | *    | *              | fzf-file-widget | *          | fzf    | Pick file(s); insert path at cursor
 rule    | *    | *              | __fzf_cd__      | *          | fzf    | cd into a chosen sub-directory
 rule    | *    | *              | __fzf_history__ | *          | fzf    | Search shell history (fzf)
-rule    | *    | *              | fzf            | *           | fzf    |
+rule    | *    | *              | fzf             | *          | fzf    |
 
 # --- atuin (recognised by its private \C-x\C-_A dispatch macro signature) ---
 rule    | s    | *              | *               | \C-x\C-_A  | atuin  | @bykey
