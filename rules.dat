@@ -1,0 +1,54 @@
+# kbs recognition + teaching rules. Pipe-delimited; fields are whitespace-trimmed.
+# Column 1 is the record kind. '*' or empty = match anything. First matching rule wins.
+#
+# rule    | type | key            | target          | macro      | source | action
+# bykey   | source | key          | action
+# synth   | source | key          | action
+# builtin | key  | action
+# example | source | text
+#
+# type: x=shell-cmd c=command s=macro f=widget/function   key: canonical (Ctrl-R, Up, ...)
+# target/macro: substring tested against the binding's target.  action '@bykey' -> bykey table.
+
+# --- fzf ---
+rule    | *    | *              | fzf-file-widget | *          | fzf    | Pick file(s); insert path at cursor
+rule    | *    | *              | __fzf_cd__      | *          | fzf    | cd into a chosen sub-directory
+rule    | *    | *              | __fzf_history__ | *          | fzf    | Search shell history (fzf)
+rule    | *    | *              | fzf            | *           | fzf    |
+
+# --- atuin (recognised by its private \C-x\C-_A dispatch macro signature) ---
+rule    | s    | *              | *               | \C-x\C-_A  | atuin  | @bykey
+rule    | *    | *              | __atuin         | *          | atuin  | @bykey
+bykey   | atuin | Ctrl-R        | History search (fuzzy, synced across machines)
+bykey   | atuin | Up            | History up-search by prefix
+
+# --- ble.sh / shell ---
+rule    | *    | Ctrl-Z         | fg              | *          | ble.sh | Resume the most recent suspended job (fg)
+rule    | *    | *              | complete        | *          | ble.sh | Trigger completion
+rule    | *    | *              | menu-complete   | *          | ble.sh | Menu completion (cycle candidates)
+
+# --- synthetic rows (not keymap bindings) ---
+synth   | fzf  | {trigger}<Tab> | Fuzzy-completion trigger
+
+# --- level-B built-in keys (presence here = part of the level-B allowlist) ---
+builtin | Tab            | Complete
+builtin | Up             | Previous line / history
+builtin | Down           | Next line / history
+builtin | Left           | Move cursor left
+builtin | Right          | Move cursor right (or accept autosuggestion at line end)
+builtin | Home           | Start of line
+builtin | End            | End of line (or accept autosuggestion)
+builtin | Ctrl-A         | Start of line
+builtin | Ctrl-E         | End of line
+builtin | Ctrl-K         | Kill to end of line
+builtin | Ctrl-U         | Kill to start of line
+builtin | Ctrl-W         | Kill previous word
+builtin | Ctrl-Y         | Yank (paste) killed text
+builtin | Ctrl-L         | Clear screen
+
+# --- teaching examples (footer) ---
+example | fzf  | vim **<Tab>      fuzzy-pick a file to edit
+example | fzf  | cd **<Tab>       fuzzy-pick a sub-directory
+example | fzf  | ssh **<Tab>      fuzzy-pick a host
+example | fzf  | kill -9 **<Tab>  fuzzy-pick a process by PID
+example | atuin | Ctrl-R          search synced history; type to filter, Enter to run
