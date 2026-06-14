@@ -1,5 +1,7 @@
 # kbs — KeyBinding Shortcuts
 
+[![CI](https://github.com/DrGeoff/kbs/actions/workflows/ci.yml/badge.svg)](https://github.com/DrGeoff/kbs/actions/workflows/ci.yml)
+
 `kbs` reads your shell's **live** key bindings and prints a friendly table so you can
 learn and remember the obscure shortcuts your shell provides (atuin, fzf, ble.sh,
 readline). It works under both ble.sh and plain readline, and is zero-dependency:
@@ -87,6 +89,11 @@ to an awk renderer (`kbs.awk`). Recognition and teaching text live in `rules.dat
 tests/run.sh        # run the test suite against the committed fixtures
 ./uninstall.sh      # remove the install (lib dir + loader)
 ```
+
+Shell scripts are linted with [shellcheck](https://www.shellcheck.net/) via a
+`prek` / pre-commit hook — enable it once with `prek install` (config in
+`.pre-commit-config.yaml`). GitHub Actions (`.github/workflows/ci.yml`) runs shellcheck
+and the test suite on every push and pull request.
 
 ## License
 
