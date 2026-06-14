@@ -1,0 +1,15 @@
+# Pre-commit hooks for kbs. Install the git hook once with:
+#     prek install      # (or: pre-commit install)
+# Run manually across the repo with:
+#     prek run --all-files
+#
+# Uses the system `shellcheck` (no network downloads). kbs.bash carries a
+# `# shellcheck shell=bash` directive so it lints as bash despite having no shebang.
+repos:
+  - repo: local
+    hooks:
+      - id: shellcheck
+        name: shellcheck (shell scripts)
+        entry: shellcheck
+        language: system
+        files: '\.(sh|bash)$'

@@ -2,6 +2,7 @@
 # (atuin · fzf · ble.sh · readline). Must be a shell function: reading the keymap
 # needs ble-bind (ble.sh function) / bind (bash builtin), which a child process
 # cannot call. Renderer + rules sit beside this file. See `kbs --man`.
+# shellcheck shell=bash
 
 kbs() {
     local here awk_f rules userrules

@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
 # Zero-dependency test harness for kbs. Run: tests/run.sh
 set -u
-# CDPATH= guards against a CDPATH in the environment making `cd` print its target,
-# which would corrupt these command substitutions.
-HERE=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
-ROOT=$(CDPATH= cd -- "$HERE/.." && pwd)
+# unset CDPATH so a CDPATH in the environment can't make `cd` print its target
+# and corrupt these command substitutions.
+HERE=$(unset CDPATH; cd -- "$(dirname -- "$0")" && pwd)
+ROOT=$(unset CDPATH; cd -- "$HERE/.." && pwd)
 AWK=${AWK:-awk}
 FIX="$HERE/fixtures"
 # Results go to a temp file so counts survive subshells (piped assertions run in a
@@ -76,8 +76,8 @@ printf '%s' "$B_C" | assert_not_contains "level C: no raw M-\\' key" "M-\\'"
 
 # level counts increase A < B <= C
 ca=$(printf '%s\n' "$B_A" | grep -c '|'); cb=$(printf '%s\n' "$B_B" | grep -c '|'); cc=$(printf '%s\n' "$B_C" | grep -c '|')
-[ "$ca" -lt "$cb" ] && ok || bad "level A($ca) < B($cb)"
-[ "$cb" -le "$cc" ] && ok || bad "level B($cb) <= C($cc)"
+if [ "$ca" -lt "$cb" ]; then ok; else bad "level A($ca) < B($cb)"; fi
+if [ "$cb" -le "$cc" ]; then ok; else bad "level B($cb) <= C($cc)"; fi
 
 # ---- Task 4: table rendering + width invariant + colour ----
 T=$(ble_dump | render table ble emacs A 0 0)
@@ -86,7 +86,7 @@ printf '%s' "$T" | assert_contains "table has header" "Source"
 printf '%s' "$T" | assert_contains "table top border" "┌"
 
 # width invariant: every box-drawing line has equal column count (ambiguous=1)
-WIDTHS=$(printf '%s\n' "$T" | grep -E '^[┌│├└]' | LC_ALL=C.UTF-8 awk '{print length}' | sort -u | wc -l)
+WIDTHS=$(printf '%s\n' "$T" | grep -E '^[┌│├└]' | LC_ALL=C.UTF-8 "$AWK" '{print length}' | sort -u | wc -l)
 assert_eq "all box lines share one width" "1" "$WIDTHS"
 
 # colour: present when color=1, absent when color=0
@@ -101,7 +101,7 @@ printf '%s' "$(ble_dump | render table ble emacs B 0 0)" | assert_contains "leve
 # title that is wider than the columns must not break the box (readline level A is the tight case)
 RLT=$(rl_dump | render table readline readline A 0 0)
 printf '%s' "$RLT" | assert_contains "readline A title shows hint" "use -v or -vv for more bindings"
-RLW=$(printf '%s\n' "$RLT" | grep -E '^[┌│├└]' | LC_ALL=C.UTF-8 awk '{print length}' | sort -u | wc -l)
+RLW=$(printf '%s\n' "$RLT" | grep -E '^[┌│├└]' | LC_ALL=C.UTF-8 "$AWK" '{print length}' | sort -u | wc -l)
 assert_eq "readline A box stays width-consistent with long title" "1" "$RLW"
 
 # ---- Task 5: examples footer ----
