@@ -124,6 +124,9 @@ BEGIN {
   NAMED["sp"]="Space"; NAMED["esc"]="Escape"; NAMED["ret"]="Enter"
   RANK["s"]=0; RANK["x"]=1; RANK["c"]=2; RANK["f"]=3
   ORD["atuin"]=1; ORD["fzf"]=2; ORD["ble.sh"]=3; ORD["readline"]=4; ORD["shell"]=5; ORD["other"]=6
+  COLOR["atuin"]="\033[38;5;213m"; COLOR["fzf"]="\033[38;5;114m"
+  COLOR["ble.sh"]="\033[38;5;75m"; COLOR["readline"]="\033[38;5;179m"
+  COLOR["shell"]="\033[38;5;245m"; COLOR["other"]="\033[38;5;245m"
   if (userrules != "") load_rules(userrules)
   load_rules(rules)
   KMFILTER = (backend == "readline") ? "readline" : keymap
@@ -187,6 +190,31 @@ END {
   if (examples == 1) render_examples()
 }
 
-# --- rendering (stubbed; implemented in Task 4 / Task 5) ---
-function render_table() { }
+# --- rendering ---
+function rep(n, ch,   s) { s=""; while (n-- > 0) s = s ch; return s }
+function pad(s, w) { return s rep(w - length(s), " ") }
+
+function render_table(   i, kw, sw, aw, total, B, R, sc, title, j) {
+  B = (color == 1) ? "\033[1m" : ""
+  R = (color == 1) ? "\033[0m" : ""
+  title = "Keybindings - " ((backend=="readline")?"readline":"ble.sh") " - level " level
+  kw = length("Key"); sw = length("Source"); aw = length("Action")
+  for (i = 1; i <= nf; i++) {
+    if (length(fk[i]) > kw) kw = length(fk[i])
+    if (length(fs[i]) > sw) sw = length(fs[i])
+    if (length(fa[i]) > aw) aw = length(fa[i])
+  }
+  total = kw + sw + aw + 8
+  print ""
+  print "┌" rep(total, "─") "┐"
+  print "│ " B pad(title, total - 2) R " │"
+  print "├" rep(kw+2,"─") "┬" rep(sw+2,"─") "┬" rep(aw+2,"─") "┤"
+  print "│ " B pad("Key", kw) R " │ " B pad("Source", sw) R " │ " B pad("Action", aw) R " │"
+  print "├" rep(kw+2,"─") "┼" rep(sw+2,"─") "┼" rep(aw+2,"─") "┤"
+  for (i = 1; i <= nf; i++) {
+    sc = (color == 1 && (fs[i] in COLOR)) ? COLOR[fs[i]] : ""
+    print "│ " B pad(fk[i], kw) R " │ " sc pad(fs[i], sw) R " │ " pad(fa[i], aw) " │"
+  }
+  print "└" rep(kw+2,"─") "┴" rep(sw+2,"─") "┴" rep(aw+2,"─") "┘"
+}
 function render_examples() { }

@@ -72,6 +72,20 @@ ca=$(printf '%s\n' "$B_A" | grep -c '|'); cb=$(printf '%s\n' "$B_B" | grep -c '|
 [ "$ca" -lt "$cb" ] && ok || bad "level A($ca) < B($cb)"
 [ "$cb" -le "$cc" ] && ok || bad "level B($cb) <= C($cc)"
 
+# ---- Task 4: table rendering + width invariant + colour ----
+T=$(ble_dump | render table ble emacs A 0 0)
+printf '%s' "$T" | assert_contains "table has title"  "Keybindings"
+printf '%s' "$T" | assert_contains "table has header" "Source"
+printf '%s' "$T" | assert_contains "table top border" "┌"
+
+# width invariant: every box-drawing line has equal column count (ambiguous=1)
+WIDTHS=$(printf '%s\n' "$T" | grep -E '^[┌│├└]' | LC_ALL=C.UTF-8 awk '{print length}' | sort -u | wc -l)
+assert_eq "all box lines share one width" "1" "$WIDTHS"
+
+# colour: present when color=1, absent when color=0
+printf '%s' "$(ble_dump | render table ble emacs A 1 0)" | assert_contains "colour on -> ANSI" $'\033[38;5'
+printf '%s' "$T" | assert_not_contains "colour off -> no ANSI" $'\033['
+
 # grep -c already prints 0 (and exits 1) on no matches; capture directly.
 PASS=$(grep -c '^p' "$RESULTS"); FAIL=$(grep -c '^f' "$RESULTS")
 printf '\n%d passed, %d failed\n' "$PASS" "$FAIL"
