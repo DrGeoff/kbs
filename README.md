@@ -38,3 +38,8 @@ to an awk renderer (`kbs.awk`). Recognition and teaching text live in `rules.dat
 make test           # runs tests/run.sh against committed fixtures
 make uninstall
 ```
+
+## License
+
+BSD 3-Clause License — see [LICENSE](LICENSE). (Same license as
+[ble.sh](https://github.com/akinomyoga/ble.sh).)
