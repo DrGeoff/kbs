@@ -1,11 +1,16 @@
 #!/usr/bin/env bash
 # Zero-dependency test harness for kbs. Run: tests/run.sh  (or: make test)
 set -u
-HERE=$(cd -- "$(dirname -- "$0")" && pwd)
-ROOT=$(cd -- "$HERE/.." && pwd)
+# CDPATH= guards against a CDPATH in the environment making `cd` print its target,
+# which would corrupt these command substitutions.
+HERE=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+ROOT=$(CDPATH= cd -- "$HERE/.." && pwd)
 AWK=${AWK:-awk}
 FIX="$HERE/fixtures"
-PASS=0 FAIL=0
+# Results go to a temp file so counts survive subshells (piped assertions run in a
+# subshell; in-memory counters there would be lost — a false-green hazard).
+RESULTS=$(mktemp)
+trap 'rm -f "$RESULTS"' EXIT
 
 # render <emit> <backend> <keymap> <level> <color> <examples>   (dump on stdin)
 render() {
@@ -16,8 +21,8 @@ render() {
 ble_dump()  { printf '## ble emacs\n'; cat "$FIX/ble_emacs.txt"; }
 rl_dump()   { cat "$FIX/readline_raw.txt"; }
 
-ok()   { PASS=$((PASS+1)); }
-bad()  { FAIL=$((FAIL+1)); printf 'FAIL: %s\n' "$1" >&2; }
+ok()   { printf 'p\n' >> "$RESULTS"; }
+bad()  { printf 'f\n' >> "$RESULTS"; printf 'FAIL: %s\n' "$1" >&2; }
 
 assert_contains() {  # <description> <needle> ; haystack on stdin
   local desc=$1 needle=$2 hay; hay=$(cat)
@@ -62,5 +67,7 @@ ca=$(printf '%s\n' "$B_A" | grep -c '|'); cb=$(printf '%s\n' "$B_B" | grep -c '|
 [ "$ca" -lt "$cb" ] && ok || bad "level A($ca) < B($cb)"
 [ "$cb" -le "$cc" ] && ok || bad "level B($cb) <= C($cc)"
 
+# grep -c already prints 0 (and exits 1) on no matches; capture directly.
+PASS=$(grep -c '^p' "$RESULTS"); FAIL=$(grep -c '^f' "$RESULTS")
 printf '\n%d passed, %d failed\n' "$PASS" "$FAIL"
 [ "$FAIL" -eq 0 ]
