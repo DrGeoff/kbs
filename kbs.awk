@@ -203,7 +203,7 @@ function render_table(   i, kw, sw, aw, total, B, R, sc, title, lvltext, tl) {
   R = (color == 1) ? "\033[0m" : ""
   # The default (level A) view nudges toward the more-verbose levels.
   lvltext = (level == "A") ? "use -v or -vv for more bindings" : ("level " level)
-  title = "Keybindings - " ((backend=="readline")?"readline":"ble.sh") " - " lvltext
+  title = "Keybindings - " lvltext
   kw = length("Key"); sw = length("Source"); aw = length("Action")
   for (i = 1; i <= nf; i++) {
     if (length(fk[i]) > kw) kw = length(fk[i])

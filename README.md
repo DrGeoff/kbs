@@ -12,7 +12,7 @@ source on a real terminal):
 
 ```
 ┌───────────────────────────────────────────────────────────────────┐
-│ Keybindings - ble.sh - use -v or -vv for more bindings            │
+│ Keybindings - use -v or -vv for more bindings                     │
 ├─────────┬────────┬────────────────────────────────────────────────┤
 │ Key     │ Source │ Action                                         │
 ├─────────┼────────┼────────────────────────────────────────────────┤
