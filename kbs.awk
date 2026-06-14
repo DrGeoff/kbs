@@ -4,9 +4,11 @@
 
 function trim(s) { sub(/^[ \t]+/, "", s); sub(/[ \t]+$/, "", s); return s }
 
-function strip_quotes(s) {
-  if ((substr(s,1,1)=="'" && substr(s,length(s),1)=="'") || \
-      (substr(s,1,1)=="\"" && substr(s,length(s),1)=="\"")) return substr(s, 2, length(s)-2)
+function strip_quotes(s,   sl) {
+  sl = length(s)
+  if (sl < 2) return s
+  if ((substr(s,1,1)=="'" && substr(s,sl,1)=="'") || \
+      (substr(s,1,1)=="\"" && substr(s,sl,1)=="\"")) return (sl > 2) ? substr(s, 2, sl - 2) : ""
   return s
 }
 
@@ -39,7 +41,7 @@ function canon(k,   lk, _n) {
   if (k == "") return ""
   if (index(k, "C-_") > 0) return ""                       # internal dispatch keys
   if (k ~ /^\\e(\[|O)[A-H]$/) return arrow(substr(k, length(k), 1))
-  if (k ~ /^\\e\[[0-9]+~$/) { _n=k; gsub(/[^0-9]/, "", _n); return TILDE[_n] }
+  if (k ~ /^\\e\[[0-9]+~$/) { _n=k; gsub(/[^0-9]/, "", _n); return (_n in TILDE) ? TILDE[_n] : "" }
   if (k=="\\t" || k=="\\C-i" || k=="C-i" || k=="TAB") return "Tab"
   if (k=="\\r" || k=="\\C-m" || k=="C-m" || k=="RET") return "Enter"
   if (k ~ /^\\C-.$/) return "Ctrl-" toupper(substr(k, length(k), 1))
@@ -80,7 +82,7 @@ function parse_ble(line,   rest, p, q, _ty) {
   # ble escapes an embedded single-quote in a key as '...'\''...': after the first
   # closing quote the leftover begins with \' — meaning the key is a compound chord
   # (e.g. "C-x '") we don't represent. Drop it rather than emit a mangled key.
-  if (substr(rest, 1, 2) == "\\'") return
+  if (rest ~ /^\\'/) return
   P_type = _ty; P_target = strip_quotes(trim(rest)); P_ok = 1
 }
 
@@ -89,14 +91,14 @@ function parse_readline(line, flag,   rest, q) {
   P_ok = 0
   if (substr(line, 1, 1) != "\"") return
   rest = substr(line, 2); q = index(rest, "\""); if (!q) return
-  P_key = substr(rest, 1, q-1); rest = substr(rest, q+1)
+  P_key = (q > 1) ? substr(rest, 1, q-1) : ""; rest = substr(rest, q+1)
   if (flag == "-X") {
     sub(/^[ \t]+/, "", rest)
-    if (substr(rest, 1, 1) == "\"") { rest = substr(rest, 2); q = index(rest, "\""); if (q) rest = substr(rest, 1, q-1) }
+    if (substr(rest, 1, 1) == "\"") { rest = substr(rest, 2); q = index(rest, "\""); rest = (q > 1) ? substr(rest, 1, q-1) : (q == 1 ? "" : rest) }
     P_type = "x"; P_target = rest
   } else {
     sub(/^:[ \t]*/, "", rest)
-    if (substr(rest, 1, 1) == "\"") { rest = substr(rest, 2); q = index(rest, "\""); if (q) rest = substr(rest, 1, q-1) }
+    if (substr(rest, 1, 1) == "\"") { rest = substr(rest, 2); q = index(rest, "\""); rest = (q > 1) ? substr(rest, 1, q-1) : (q == 1 ? "" : rest) }
     P_type = (flag == "-s") ? "s" : "f"; P_target = rest
   }
   P_km = "readline"; P_ok = 1
@@ -122,6 +124,7 @@ function classify(_km, _ty, _key, _tgt,   _i) {
 }
 
 BEGIN {
+  rn = 0; sn = 0; en = 0; Wn = 0   # accumulator counts (explicit init keeps gawk --lint quiet)
   ARROW["A"]="Up"; ARROW["B"]="Down"; ARROW["C"]="Right"; ARROW["D"]="Left"; ARROW["F"]="End"; ARROW["H"]="Home"
   TILDE["1"]="Home"; TILDE["2"]="Insert"; TILDE["3"]="Delete"; TILDE["4"]="End"; TILDE["5"]="PageUp"; TILDE["6"]="PageDown"
   NAMED["up"]="Up"; NAMED["down"]="Down"; NAMED["left"]="Left"; NAMED["right"]="Right"

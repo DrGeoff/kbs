@@ -17,10 +17,10 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y gawk
 
       - name: shellcheck
-        run: shellcheck install.sh uninstall.sh tests/run.sh kbs.bash
+        run: shellcheck install.sh uninstall.sh tests/run.sh tests/awk-lint.sh kbs.bash
 
       - name: awk lint
-        run: gawk --posix --lint=fatal -o/dev/null -f kbs.awk
+        run: tests/awk-lint.sh
 
       - name: Run tests
         run: AWK=gawk bash tests/run.sh
