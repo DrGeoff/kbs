@@ -10,22 +10,22 @@ function strip_quotes(s) {
   return s
 }
 
-function load_rules(f,   line, n, a, k) {
+function load_rules(f,   line, _n, _a, k) {
   while ((getline line < f) > 0) {
     if (line ~ /^[ \t]*#/ || line ~ /^[ \t]*$/) continue
-    n = split(line, a, /\|/)
-    for (k = 1; k <= n; k++) a[k] = trim(a[k])
-    if (a[1] == "rule") {
+    _n = split(line, _a, /\|/)
+    for (k = 1; k <= _n; k++) _a[k] = trim(_a[k])
+    if (_a[1] == "rule") {
       rn++
-      rtype[rn]=a[2]; rkey[rn]=a[3]; rtarget[rn]=a[4]; rmacro[rn]=a[5]; rsrc[rn]=a[6]; ract[rn]=a[7]
-    } else if (a[1] == "bykey") {
-      if (!((a[2], a[3]) in bykey)) bykey[a[2], a[3]] = a[4]
-    } else if (a[1] == "synth") {
-      sn++; s_src[sn]=a[2]; s_key[sn]=a[3]; s_act[sn]=a[4]
-    } else if (a[1] == "builtin") {
-      if (!(a[2] in binact)) { binact[a[2]] = a[3]; bis[a[2]] = 1 }
-    } else if (a[1] == "example") {
-      en++; e_src[en]=a[2]; e_text[en]=a[3]
+      rtype[rn]=_a[2]; rkey[rn]=_a[3]; rtarget[rn]=_a[4]; rmacro[rn]=_a[5]; rsrc[rn]=_a[6]; ract[rn]=_a[7]
+    } else if (_a[1] == "bykey") {
+      if (!((_a[2], _a[3]) in bykey)) bykey[_a[2], _a[3]] = _a[4]
+    } else if (_a[1] == "synth") {
+      sn++; s_src[sn]=_a[2]; s_key[sn]=_a[3]; s_act[sn]=_a[4]
+    } else if (_a[1] == "builtin") {
+      if (!(_a[2] in binact)) { binact[_a[2]] = _a[3]; bis[_a[2]] = 1 }
+    } else if (_a[1] == "example") {
+      en++; e_src[en]=_a[2]; e_text[en]=_a[3]
     }
   }
   close(f)
@@ -33,13 +33,13 @@ function load_rules(f,   line, n, a, k) {
 
 function arrow(c) { return ARROW[c] }
 
-function canon(k,   lk, n) {
+function canon(k,   lk, _n) {
   k = trim(k)
   k = strip_quotes(k)
   if (k == "") return ""
   if (index(k, "C-_") > 0) return ""                       # internal dispatch keys
   if (k ~ /^\\e(\[|O)[A-H]$/) return arrow(substr(k, length(k), 1))
-  if (k ~ /^\\e\[[0-9]+~$/) { n=k; gsub(/[^0-9]/, "", n); return TILDE[n] }
+  if (k ~ /^\\e\[[0-9]+~$/) { _n=k; gsub(/[^0-9]/, "", _n); return TILDE[_n] }
   if (k=="\\t" || k=="\\C-i" || k=="C-i" || k=="TAB") return "Tab"
   if (k=="\\r" || k=="\\C-m" || k=="C-m" || k=="RET") return "Enter"
   if (k ~ /^\\C-.$/) return "Ctrl-" toupper(substr(k, length(k), 1))
@@ -57,7 +57,7 @@ function canon(k,   lk, n) {
 }
 
 # Parse a ble-bind line into P_km, P_type, P_key, P_target; sets P_ok.
-function parse_ble(line,   rest, p, q, ty) {
+function parse_ble(line,   rest, p, q, _ty) {
   P_ok = 0
   if (substr(line, 1, 13) != "ble-bind -m '") return
   rest = substr(line, 14)
@@ -65,8 +65,8 @@ function parse_ble(line,   rest, p, q, ty) {
   P_km = substr(rest, 1, p-1)
   rest = substr(rest, p+1)                 # " -s C-r '...'"
   if (substr(rest, 1, 2) != " -") return
-  ty = substr(rest, 3, 1)
-  if (ty != "f" && ty != "c" && ty != "s" && ty != "x") return
+  _ty = substr(rest, 3, 1)
+  if (_ty != "f" && _ty != "c" && _ty != "s" && _ty != "x") return
   rest = substr(rest, 4)                   # " C-r '...'"
   sub(/^[ \t]+/, "", rest)
   if (substr(rest, 1, 1) == "'") {
@@ -81,7 +81,7 @@ function parse_ble(line,   rest, p, q, ty) {
   # closing quote the leftover begins with \' — meaning the key is a compound chord
   # (e.g. "C-x '") we don't represent. Drop it rather than emit a mangled key.
   if (substr(rest, 1, 2) == "\\'") return
-  P_type = ty; P_target = strip_quotes(trim(rest)); P_ok = 1
+  P_type = _ty; P_target = strip_quotes(trim(rest)); P_ok = 1
 }
 
 # Parse a readline line for section flag (-p/-s/-X) into P_key(seq)/P_type/P_target.
@@ -102,22 +102,22 @@ function parse_readline(line, flag,   rest, q) {
   P_km = "readline"; P_ok = 1
 }
 
-function classify(km, ty, key, tgt,   i) {
-  for (i = 1; i <= rn; i++) {
-    if (rtype[i] != "" && rtype[i] != "*" && rtype[i] != ty) continue
-    if (rkey[i]  != "" && rkey[i]  != "*" && rkey[i]  != key) continue
-    if (rtarget[i] != "" && rtarget[i] != "*" && index(tgt, rtarget[i]) == 0) continue
-    if (rmacro[i]  != "" && rmacro[i]  != "*" && index(tgt, rmacro[i])  == 0) continue
-    CL_src = rsrc[i]
-    CL_act = ract[i]
-    if (CL_act == "@bykey") CL_act = ((CL_src, key) in bykey) ? bykey[CL_src, key] : tgt
-    if (CL_act == "") CL_act = tgt
+function classify(_km, _ty, _key, _tgt,   _i) {
+  for (_i = 1; _i <= rn; _i++) {
+    if (rtype[_i] != "" && rtype[_i] != "*" && rtype[_i] != _ty) continue
+    if (rkey[_i]  != "" && rkey[_i]  != "*" && rkey[_i]  != _key) continue
+    if (rtarget[_i] != "" && rtarget[_i] != "*" && index(_tgt, rtarget[_i]) == 0) continue
+    if (rmacro[_i]  != "" && rmacro[_i]  != "*" && index(_tgt, rmacro[_i])  == 0) continue
+    CL_src = rsrc[_i]
+    CL_act = ract[_i]
+    if (CL_act == "@bykey") CL_act = ((CL_src, _key) in bykey) ? bykey[CL_src, _key] : _tgt
+    if (CL_act == "") CL_act = _tgt
     return
   }
-  if (index(tgt, "fzf")   > 0) { CL_src="fzf";    CL_act=tgt; return }
-  if (index(tgt, "atuin") > 0) { CL_src="atuin";  CL_act=tgt; return }
-  if (km == "readline" && ty == "f") { CL_src="readline"; CL_act=tgt; return }
-  if (tgt != "") { CL_src="ble.sh"; CL_act=tgt; return }
+  if (index(_tgt, "fzf")   > 0) { CL_src="fzf";    CL_act=_tgt; return }
+  if (index(_tgt, "atuin") > 0) { CL_src="atuin";  CL_act=_tgt; return }
+  if (_km == "readline" && _ty == "f") { CL_src="readline"; CL_act=_tgt; return }
+  if (_tgt != "") { CL_src="ble.sh"; CL_act=_tgt; return }
   CL_src="other"; CL_act="(internal)"
 }
 
@@ -198,20 +198,20 @@ END {
 }
 
 # --- rendering ---
-function rep(n, ch,   s) { s=""; while (n-- > 0) s = s ch; return s }
+function rep(_n, ch,   s) { s=""; while (_n-- > 0) s = s ch; return s }
 function pad(s, w) { return s rep(w - length(s), " ") }
 
-function render_table(   i, kw, sw, aw, total, B, R, sc, title, lvltext, tl) {
+function render_table(   _i, kw, sw, aw, total, B, R, sc, title, lvltext, tl) {
   B = (color == 1) ? "\033[1m" : ""
   R = (color == 1) ? "\033[0m" : ""
   # The default (level A) view nudges toward the more-verbose levels.
   lvltext = (level == "A") ? "use -v or -vv for more bindings" : ("level " level)
   title = "Keybindings - " lvltext
   kw = length("Key"); sw = length("Source"); aw = length("Action")
-  for (i = 1; i <= nf; i++) {
-    if (length(fk[i]) > kw) kw = length(fk[i])
-    if (length(fs[i]) > sw) sw = length(fs[i])
-    if (length(fa[i]) > aw) aw = length(fa[i])
+  for (_i = 1; _i <= nf; _i++) {
+    if (length(fk[_i]) > kw) kw = length(fk[_i])
+    if (length(fs[_i]) > sw) sw = length(fs[_i])
+    if (length(fa[_i]) > aw) aw = length(fa[_i])
   }
   total = kw + sw + aw + 8
   # Ensure the title fits: if it's wider than the columns, widen the action column
@@ -224,21 +224,21 @@ function render_table(   i, kw, sw, aw, total, B, R, sc, title, lvltext, tl) {
   print "├" rep(kw+2,"─") "┬" rep(sw+2,"─") "┬" rep(aw+2,"─") "┤"
   print "│ " B pad("Key", kw) R " │ " B pad("Source", sw) R " │ " B pad("Action", aw) R " │"
   print "├" rep(kw+2,"─") "┼" rep(sw+2,"─") "┼" rep(aw+2,"─") "┤"
-  for (i = 1; i <= nf; i++) {
-    sc = (color == 1 && (fs[i] in COLOR)) ? COLOR[fs[i]] : ""
-    print "│ " B pad(fk[i], kw) R " │ " sc pad(fs[i], sw) R " │ " pad(fa[i], aw) " │"
+  for (_i = 1; _i <= nf; _i++) {
+    sc = (color == 1 && (fs[_i] in COLOR)) ? COLOR[fs[_i]] : ""
+    print "│ " B pad(fk[_i], kw) R " │ " sc pad(fs[_i], sw) R " │ " pad(fa[_i], aw) " │"
   }
   print "└" rep(kw+2,"─") "┴" rep(sw+2,"─") "┴" rep(aw+2,"─") "┘"
 }
-function render_examples(   i, DIM, B, R, present, has) {
+function render_examples(   _i, DIM, B, R, present, has) {
   DIM = (color == 1) ? "\033[2m" : ""
   B   = (color == 1) ? "\033[1m" : ""
   R   = (color == 1) ? "\033[0m" : ""
-  for (i = 1; i <= nf; i++) present[fs[i]] = 1
+  for (_i = 1; _i <= nf; _i++) present[fs[_i]] = 1
   has = 0
-  for (i = 1; i <= en; i++) if (e_src[i] in present) { has = 1; break }
+  for (_i = 1; _i <= en; _i++) if (e_src[_i] in present) { has = 1; break }
   if (!has) return
   print ""
   print B "Examples" R DIM "  - fzf " trigger " trigger: type " trigger " where you'd hit Tab" R
-  for (i = 1; i <= en; i++) if (e_src[i] in present) print "  " DIM e_text[i] R
+  for (_i = 1; _i <= en; _i++) if (e_src[_i] in present) print "  " DIM e_text[_i] R
 }

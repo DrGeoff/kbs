@@ -19,5 +19,8 @@ jobs:
       - name: shellcheck
         run: shellcheck install.sh uninstall.sh tests/run.sh kbs.bash
 
+      - name: awk lint
+        run: gawk --posix --lint=fatal -o/dev/null -f kbs.awk
+
       - name: Run tests
         run: AWK=gawk bash tests/run.sh

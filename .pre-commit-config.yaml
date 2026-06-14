@@ -13,3 +13,10 @@ repos:
         entry: shellcheck
         language: system
         files: '\.(sh|bash)$'
+      - id: gawk-lint
+        name: gawk --lint (kbs.awk)
+        # Parse-only (-o/dev/null pretty-prints without running); --lint=fatal turns
+        # any lint warning (e.g. a local shadowing a global) into a non-zero exit.
+        entry: gawk --posix --lint=fatal -o/dev/null -f
+        language: system
+        files: '^kbs\.awk$'
