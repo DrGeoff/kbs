@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Zero-dependency test harness for kbs. Run: tests/run.sh  (or: make test)
+# Zero-dependency test harness for kbs. Run: tests/run.sh
 set -u
 # CDPATH= guards against a CDPATH in the environment making `cd` print its target,
 # which would corrupt these command substitutions.

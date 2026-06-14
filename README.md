@@ -36,14 +36,14 @@ Examples  - fzf ** trigger: type ** where you'd hit Tab
 ```sh
 git clone <repo> ~/code/kbs
 cd ~/code/kbs
-make install        # copies to ~/.local/lib/kbs, adds a loader to ~/.bashrc.d
+./install.sh        # copies to ~/.local/lib/kbs, adds a loader to ~/.bashrc.d
 ```
 
 Open a new shell, then run `kbs`.
 
 ### Prerequisite: your `~/.bashrc` must source `~/.bashrc.d/`
 
-`make install` drops a loader at `~/.bashrc.d/kbs`. That loader is only picked up if your
+`./install.sh` drops a loader at `~/.bashrc.d/kbs`. That loader is only picked up if your
 `~/.bashrc` already sources the `~/.bashrc.d/` directory. Many distributions (e.g. Fedora)
 ship a `~/.bashrc` that does this by default — it contains something like:
 
@@ -84,8 +84,8 @@ to an awk renderer (`kbs.awk`). Recognition and teaching text live in `rules.dat
 ## Develop / test
 
 ```sh
-make test           # runs tests/run.sh against committed fixtures
-make uninstall
+tests/run.sh        # run the test suite against the committed fixtures
+./uninstall.sh      # remove the install (lib dir + loader)
 ```
 
 ## License
