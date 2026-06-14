@@ -102,7 +102,7 @@ EOF
 _kbs_man() {
     cat <<'EOF'
 NAME
-     kbs — display and learn this shell's interactive key bindings
+     kbs — KeyBinding Shortcuts: display and learn this shell's key bindings
 
 SYNOPSIS
      kbs [-l | -v | -vv] [-k keymap] [--no-examples] [--no-color]
