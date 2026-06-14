@@ -1,0 +1,23 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # The runner's default `awk` is mawk; the renderer is POSIX-awk but the test
+      # suite's width check needs gawk's character-aware length(). python3 (for the
+      # pager smoke test) and shellcheck are already on the runner.
+      - name: Install gawk
+        run: sudo apt-get update && sudo apt-get install -y gawk
+
+      - name: shellcheck
+        run: shellcheck install.sh uninstall.sh tests/run.sh kbs.bash
+
+      - name: Run tests
+        run: AWK=gawk bash tests/run.sh
