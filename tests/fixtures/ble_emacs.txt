@@ -1,0 +1,671 @@
+ble-bind --csi '1~' home
+ble-bind --csi '2~' insert
+ble-bind --csi '3~' delete
+ble-bind --csi '4~' end
+ble-bind --csi '5~' prior
+ble-bind --csi '6~' next
+ble-bind --csi '7~' home
+ble-bind --csi '8~' end
+ble-bind --csi '11~' f1
+ble-bind --csi '12~' f2
+ble-bind --csi '13~' f3
+ble-bind --csi '14~' f4
+ble-bind --csi '15~' f5
+ble-bind --csi '17~' f6
+ble-bind --csi '18~' f7
+ble-bind --csi '19~' f8
+ble-bind --csi '20~' f9
+ble-bind --csi '21~' f10
+ble-bind --csi '23~' f11
+ble-bind --csi '24~' f12
+ble-bind --csi '25~' f13
+ble-bind --csi '26~' f14
+ble-bind --csi '28~' f15
+ble-bind --csi '29~' f16
+ble-bind --csi '31~' f17
+ble-bind --csi '32~' f18
+ble-bind --csi '33~' f19
+ble-bind --csi '34~' f20
+ble-bind --csi '200~' paste_begin
+ble-bind --csi '201~' paste_end
+ble-bind --csi A up
+ble-bind --csi B down
+ble-bind --csi C right
+ble-bind --csi D left
+ble-bind --csi E begin
+ble-bind --csi F end
+ble-bind --csi H home
+ble-bind --csi I focus
+ble-bind --csi M RET
+ble-bind --csi O blur
+ble-bind --csi P f1
+ble-bind --csi Q f2
+ble-bind --csi R f3
+ble-bind --csi S f4
+ble-bind --csi X '='
+ble-bind --csi j '*'
+ble-bind --csi k +
+ble-bind --csi l ','
+ble-bind --csi m -
+ble-bind --csi n .
+ble-bind --csi o /
+ble-bind --csi p 0
+ble-bind --csi q 1
+ble-bind --csi r 2
+ble-bind --csi s 3
+ble-bind --csi t 4
+ble-bind --csi u 5
+ble-bind --csi v 6
+ble-bind --csi w 7
+ble-bind --csi x 8
+ble-bind --csi y 9
+ble-bind -k 'ESC ? SP' SP
+ble-bind -k 'ESC ? I' TAB
+ble-bind -k 'ESC ? M' RET
+ble-bind -k 'ESC ? X' '='
+ble-bind -k 'ESC ? j' '*'
+ble-bind -k 'ESC ? k' +
+ble-bind -k 'ESC ? l' ','
+ble-bind -k 'ESC ? n' .
+ble-bind -k 'ESC ? o' /
+ble-bind -k 'ESC ? p' 0
+ble-bind -k 'ESC ? q' 1
+ble-bind -k 'ESC ? r' 2
+ble-bind -k 'ESC ? s' 3
+ble-bind -k 'ESC ? t' 4
+ble-bind -k 'ESC ? u' 5
+ble-bind -k 'ESC ? v' 6
+ble-bind -k 'ESC ? w' 7
+ble-bind -k 'ESC ? x' 8
+ble-bind -k 'ESC ? y' 9
+ble-bind -k 'ESC O SP' SP
+ble-bind -k 'ESC O A' up
+ble-bind -k 'ESC O B' down
+ble-bind -k 'ESC O C' right
+ble-bind -k 'ESC O D' left
+ble-bind -k 'ESC O E' begin
+ble-bind -k 'ESC O F' end
+ble-bind -k 'ESC O H' home
+ble-bind -k 'ESC O I' TAB
+ble-bind -k 'ESC O M' RET
+ble-bind -k 'ESC O O' blur
+ble-bind -k 'ESC O P' f1
+ble-bind -k 'ESC O Q' f2
+ble-bind -k 'ESC O R' f3
+ble-bind -k 'ESC O S' f4
+ble-bind -k 'ESC O X' '='
+ble-bind -k 'ESC O a' C-up
+ble-bind -k 'ESC O b' C-down
+ble-bind -k 'ESC O c' C-right
+ble-bind -k 'ESC O d' C-left
+ble-bind -k 'ESC O j' '*'
+ble-bind -k 'ESC O k' +
+ble-bind -k 'ESC O l' ','
+ble-bind -k 'ESC O n' .
+ble-bind -k 'ESC O o' /
+ble-bind -k 'ESC O p' 0
+ble-bind -k 'ESC O q' 1
+ble-bind -k 'ESC O r' 2
+ble-bind -k 'ESC O s' 3
+ble-bind -k 'ESC O t' 4
+ble-bind -k 'ESC O u' 5
+ble-bind -k 'ESC O v' 6
+ble-bind -k 'ESC O w' 7
+ble-bind -k 'ESC O x' 8
+ble-bind -k 'ESC O y' 9
+ble-bind -k 'ESC [ 0 n' dsr0
+ble-bind -k 'ESC [ 1 $' S-home
+ble-bind -k 'ESC [ 1 1 $' S-f1
+ble-bind -k 'ESC [ 1 2 $' S-f2
+ble-bind -k 'ESC [ 1 3 $' S-f3
+ble-bind -k 'ESC [ 1 4 $' S-f4
+ble-bind -k 'ESC [ 1 5 $' S-f5
+ble-bind -k 'ESC [ 1 7 $' S-f6
+ble-bind -k 'ESC [ 1 8 $' S-f7
+ble-bind -k 'ESC [ 1 9 $' S-f8
+ble-bind -k 'ESC [ 1 z' find
+ble-bind -k 'ESC [ 2 $' S-insert
+ble-bind -k 'ESC [ 2 0 $' S-f9
+ble-bind -k 'ESC [ 2 0 0 $' S-paste_begin
+ble-bind -k 'ESC [ 2 0 1 $' S-paste_end
+ble-bind -k 'ESC [ 2 1 $' S-f10
+ble-bind -k 'ESC [ 2 1 4 z' home
+ble-bind -k 'ESC [ 2 1 6 z' next
+ble-bind -k 'ESC [ 2 2 0 z' end
+ble-bind -k 'ESC [ 2 2 2 z' prior
+ble-bind -k 'ESC [ 2 2 4 z' f1
+ble-bind -k 'ESC [ 2 2 5 z' f2
+ble-bind -k 'ESC [ 2 2 6 z' f3
+ble-bind -k 'ESC [ 2 2 7 z' f4
+ble-bind -k 'ESC [ 2 2 8 z' f5
+ble-bind -k 'ESC [ 2 2 9 z' f6
+ble-bind -k 'ESC [ 2 3 $' S-f11
+ble-bind -k 'ESC [ 2 3 0 z' f7
+ble-bind -k 'ESC [ 2 3 1 z' f8
+ble-bind -k 'ESC [ 2 3 2 z' f9
+ble-bind -k 'ESC [ 2 3 3 z' f10
+ble-bind -k 'ESC [ 2 3 4 z' f11
+ble-bind -k 'ESC [ 2 3 5 z' f12
+ble-bind -k 'ESC [ 2 4 $' S-f12
+ble-bind -k 'ESC [ 2 4 7 z' insert
+ble-bind -k 'ESC [ 2 5 $' S-f13
+ble-bind -k 'ESC [ 2 6 $' S-f14
+ble-bind -k 'ESC [ 2 8 $' S-f15
+ble-bind -k 'ESC [ 2 9 $' S-f16
+ble-bind -k 'ESC [ 2 J' S-home
+ble-bind -k 'ESC [ 2 K' S-delete
+ble-bind -k 'ESC [ 3 $' S-delete
+ble-bind -k 'ESC [ 3 1 $' S-f17
+ble-bind -k 'ESC [ 3 2 $' S-f18
+ble-bind -k 'ESC [ 3 3 $' S-f19
+ble-bind -k 'ESC [ 3 4 $' S-f20
+ble-bind -k 'ESC [ 4 $' S-end
+ble-bind -k 'ESC [ 4 h' insert
+ble-bind -k 'ESC [ 4 l' S-insert
+ble-bind -k 'ESC [ 4 z' select
+ble-bind -k 'ESC [ 5 $' S-prior
+ble-bind -k 'ESC [ 6 $' S-next
+ble-bind -k 'ESC [ 7 $' S-home
+ble-bind -k 'ESC [ 8 $' S-end
+ble-bind -k 'ESC [ J' C-end
+ble-bind -k 'ESC [ K' S-end
+ble-bind -k 'ESC [ L' C-insert
+ble-bind -k 'ESC [ P' delete
+ble-bind -k 'ESC [ Z' S-TAB
+ble-bind -k 'ESC [ [ A' f1
+ble-bind -k 'ESC [ [ B' f2
+ble-bind -k 'ESC [ [ C' f3
+ble-bind -k 'ESC [ [ D' f4
+ble-bind -k 'ESC [ [ E' f5
+ble-bind -k 'ESC [ a' S-up
+ble-bind -k 'ESC [ b' S-down
+ble-bind -k 'ESC [ c' S-right
+ble-bind -k 'ESC [ d' S-left
+ble-bind -k 'SS3 SP' SP
+ble-bind -k 'SS3 A' up
+ble-bind -k 'SS3 B' down
+ble-bind -k 'SS3 C' right
+ble-bind -k 'SS3 D' left
+ble-bind -k 'SS3 E' begin
+ble-bind -k 'SS3 F' end
+ble-bind -k 'SS3 H' home
+ble-bind -k 'SS3 I' TAB
+ble-bind -k 'SS3 M' RET
+ble-bind -k 'SS3 O' blur
+ble-bind -k 'SS3 P' f1
+ble-bind -k 'SS3 Q' f2
+ble-bind -k 'SS3 R' f3
+ble-bind -k 'SS3 S' f4
+ble-bind -k 'SS3 X' '='
+ble-bind -k 'SS3 a' C-up
+ble-bind -k 'SS3 b' C-down
+ble-bind -k 'SS3 c' C-right
+ble-bind -k 'SS3 d' C-left
+ble-bind -k 'SS3 j' '*'
+ble-bind -k 'SS3 k' +
+ble-bind -k 'SS3 l' ','
+ble-bind -k 'SS3 n' .
+ble-bind -k 'SS3 o' /
+ble-bind -k 'SS3 p' 0
+ble-bind -k 'SS3 q' 1
+ble-bind -k 'SS3 r' 2
+ble-bind -k 'SS3 s' 3
+ble-bind -k 'SS3 t' 4
+ble-bind -k 'SS3 u' 5
+ble-bind -k 'SS3 v' 6
+ble-bind -k 'SS3 w' 7
+ble-bind -k 'SS3 x' 8
+ble-bind -k 'SS3 y' 9
+ble-bind -k 'CSI 0 n' dsr0
+ble-bind -k 'CSI 1 z' find
+ble-bind -k 'CSI 2 $' S-insert
+ble-bind -k 'CSI 2 1 4 z' home
+ble-bind -k 'CSI 2 1 6 z' next
+ble-bind -k 'CSI 2 2 0 z' end
+ble-bind -k 'CSI 2 2 2 z' prior
+ble-bind -k 'CSI 2 2 4 z' f1
+ble-bind -k 'CSI 2 2 5 z' f2
+ble-bind -k 'CSI 2 2 6 z' f3
+ble-bind -k 'CSI 2 2 7 z' f4
+ble-bind -k 'CSI 2 2 8 z' f5
+ble-bind -k 'CSI 2 2 9 z' f6
+ble-bind -k 'CSI 2 3 $' S-f11
+ble-bind -k 'CSI 2 3 0 z' f7
+ble-bind -k 'CSI 2 3 1 z' f8
+ble-bind -k 'CSI 2 3 2 z' f9
+ble-bind -k 'CSI 2 3 3 z' f10
+ble-bind -k 'CSI 2 3 4 z' f11
+ble-bind -k 'CSI 2 3 5 z' f12
+ble-bind -k 'CSI 2 4 $' S-f12
+ble-bind -k 'CSI 2 4 7 z' insert
+ble-bind -k 'CSI 2 5 $' S-f13
+ble-bind -k 'CSI 2 6 $' S-f14
+ble-bind -k 'CSI 2 8 $' S-f15
+ble-bind -k 'CSI 2 9 $' S-f16
+ble-bind -k 'CSI 2 J' S-home
+ble-bind -k 'CSI 2 K' S-delete
+ble-bind -k 'CSI 3 $' S-delete
+ble-bind -k 'CSI 3 1 $' S-f17
+ble-bind -k 'CSI 3 2 $' S-f18
+ble-bind -k 'CSI 3 3 $' S-f19
+ble-bind -k 'CSI 3 4 $' S-f20
+ble-bind -k 'CSI 4 h' insert
+ble-bind -k 'CSI 4 l' S-insert
+ble-bind -k 'CSI 4 z' select
+ble-bind -k 'CSI 5 $' S-prior
+ble-bind -k 'CSI 6 $' S-next
+ble-bind -k 'CSI 7 $' S-home
+ble-bind -k 'CSI 8 $' S-end
+ble-bind -k 'CSI J' C-end
+ble-bind -k 'CSI K' S-end
+ble-bind -k 'CSI L' C-insert
+ble-bind -k 'CSI P' delete
+ble-bind -k 'CSI Z' S-TAB
+ble-bind -k 'CSI [ A' f1
+ble-bind -k 'CSI [ B' f2
+ble-bind -k 'CSI [ C' f3
+ble-bind -k 'CSI [ D' f4
+ble-bind -k 'CSI [ E' f5
+ble-bind -k 'CSI a' S-up
+ble-bind -k 'CSI b' S-down
+ble-bind -k 'CSI c' S-right
+ble-bind -k 'CSI d' S-left
+# keymap isearch
+ble-bind -m 'isearch' -f BS isearch/prev
+ble-bind -m 'isearch' -f RET isearch/exit
+ble-bind -m 'isearch' -f DEL isearch/prev
+ble-bind -m 'isearch' -f __defchar__ isearch/self-insert
+ble-bind -m 'isearch' -f __default__ isearch/exit-default
+ble-bind -m 'isearch' -f __line_limit__ nop
+ble-bind -m 'isearch' -f C-RET isearch/accept-line
+ble-bind -m 'isearch' -f 'C-?' isearch/prev
+ble-bind -m 'isearch' -f C-g isearch/cancel
+ble-bind -m 'isearch' -f C-h isearch/prev
+ble-bind -m 'isearch' -f C-j isearch/accept-line
+ble-bind -m 'isearch' -f C-m isearch/exit
+ble-bind -m 'isearch' -f C-r isearch/backward
+ble-bind -m 'isearch' -f C-s isearch/forward
+ble-bind -m 'isearch' -f 'C-x C-g' isearch/cancel
+ble-bind -m 'isearch' -f C-M-g isearch/cancel
+# keymap nsearch
+ble-bind -m 'nsearch' -f RET nsearch/exit
+ble-bind -m 'nsearch' -f __default__ nsearch/exit-default
+ble-bind -m 'nsearch' -f __line_limit__ nop
+ble-bind -m 'nsearch' -f prior nsearch/backward
+ble-bind -m 'nsearch' -f next nsearch/forward
+ble-bind -m 'nsearch' -f up nsearch/backward
+ble-bind -m 'nsearch' -f down nsearch/forward
+ble-bind -m 'nsearch' -f C-RET nsearch/accept-line
+ble-bind -m 'nsearch' -f C-g nsearch/cancel
+ble-bind -m 'nsearch' -f C-j nsearch/accept-line
+ble-bind -m 'nsearch' -f C-m nsearch/exit
+ble-bind -m 'nsearch' -f C-n nsearch/forward
+ble-bind -m 'nsearch' -f C-p nsearch/backward
+ble-bind -m 'nsearch' -f C-r nsearch/backward
+ble-bind -m 'nsearch' -f C-s nsearch/forward
+ble-bind -m 'nsearch' -f 'C-x C-g' nsearch/cancel
+ble-bind -m 'nsearch' -f C-M-g nsearch/cancel
+# keymap emacs
+ble-bind -m 'emacs' -f NUL set-mark
+ble-bind -m 'emacs' -f BS 'delete-region-or delete-backward-char'
+ble-bind -m 'emacs' -f TAB complete
+ble-bind -m 'emacs' -f RET accept-single-line-or-newline
+ble-bind -m 'emacs' -f SP magic-space
+ble-bind -m 'emacs' -f - append-arg
+ble-bind -m 'emacs' -f / magic-slash
+ble-bind -m 'emacs' -f 0 append-arg
+ble-bind -m 'emacs' -f 1 append-arg
+ble-bind -m 'emacs' -f 2 append-arg
+ble-bind -m 'emacs' -f 3 append-arg
+ble-bind -m 'emacs' -f 4 append-arg
+ble-bind -m 'emacs' -f 5 append-arg
+ble-bind -m 'emacs' -f 6 append-arg
+ble-bind -m 'emacs' -f 7 append-arg
+ble-bind -m 'emacs' -f 8 append-arg
+ble-bind -m 'emacs' -f 9 append-arg
+ble-bind -m 'emacs' -f DEL 'delete-region-or delete-backward-char'
+ble-bind -m 'emacs' -f __batch_char__ batch-insert
+ble-bind -m 'emacs' -f __defchar__ self-insert
+ble-bind -m 'emacs' -f __before_widget__ emacs/__before_widget__
+ble-bind -m 'emacs' -f __after_widget__ emacs/__after_widget__
+ble-bind -m 'emacs' -f __attach__ safe/__attach__
+ble-bind -m 'emacs' -f __line_limit__ __line_limit__
+ble-bind -m 'emacs' -f ac_enter auto-complete-enter
+ble-bind -m 'emacs' -f insert overwrite-mode
+ble-bind -m 'emacs' -f home beginning-of-line
+ble-bind -m 'emacs' -f prior history-search-backward
+ble-bind -m 'emacs' -f delete 'delete-region-or delete-forward-char'
+ble-bind -m 'emacs' -f end end-of-line
+ble-bind -m 'emacs' -f next history-search-forward
+ble-bind -m 'emacs' -f f1 command-help
+ble-bind -m 'emacs' -f paste_begin emacs/bracketed-paste
+ble-bind -m 'emacs' -s up '\C-x\C-_A4\a\C-x\C-_A0\a'
+ble-bind -m 'emacs' -f down 'forward-line history'
+ble-bind -m 'emacs' -f right forward-char
+ble-bind -m 'emacs' -f left backward-char
+ble-bind -m 'emacs' -f S-TAB 'menu-complete backward'
+ble-bind -m 'emacs' -f S-insert yank
+ble-bind -m 'emacs' -f S-home '@marked beginning-of-line'
+ble-bind -m 'emacs' -f S-delete 'kill-region-or kill-backward-uword'
+ble-bind -m 'emacs' -f S-end '@marked end-of-line'
+ble-bind -m 'emacs' -f S-up '@marked backward-line'
+ble-bind -m 'emacs' -f S-down '@marked forward-line'
+ble-bind -m 'emacs' -f S-right '@marked forward-char'
+ble-bind -m 'emacs' -f S-left '@marked backward-char'
+ble-bind -m 'emacs' -f C-BS emacs/undo
+ble-bind -m 'emacs' -f C-TAB menu-complete
+ble-bind -m 'emacs' -f C-RET accept-line
+ble-bind -m 'emacs' -f C-SP set-mark
+ble-bind -m 'emacs' -f C-- append-arg
+ble-bind -m 'emacs' -f C-/ emacs/undo
+ble-bind -m 'emacs' -f C-0 append-arg
+ble-bind -m 'emacs' -f C-1 append-arg
+ble-bind -m 'emacs' -f C-2 append-arg
+ble-bind -m 'emacs' -f C-3 append-arg
+ble-bind -m 'emacs' -f C-4 append-arg
+ble-bind -m 'emacs' -f C-5 append-arg
+ble-bind -m 'emacs' -f C-6 append-arg
+ble-bind -m 'emacs' -f C-7 append-arg
+ble-bind -m 'emacs' -f C-8 append-arg
+ble-bind -m 'emacs' -f C-9 append-arg
+ble-bind -m 'emacs' -f 'C-?' 'delete-region-or delete-backward-char'
+ble-bind -m 'emacs' -f C-@ set-mark
+ble-bind -m 'emacs' -f 'C-\' bell
+ble-bind -m 'emacs' -f 'C-]' character-search-forward
+ble-bind -m 'emacs' -f 'C-^' bell
+ble-bind -m 'emacs' -f C-_ emacs/undo
+ble-bind -m 'emacs' -f C-a beginning-of-line
+ble-bind -m 'emacs' -f C-b backward-char
+ble-bind -m 'emacs' -f C-c discard-line
+ble-bind -m 'emacs' -f C-d 'delete-region-or delete-forward-char-or-exit'
+ble-bind -m 'emacs' -f C-e end-of-line
+ble-bind -m 'emacs' -f C-f forward-char
+ble-bind -m 'emacs' -f C-g bell
+ble-bind -m 'emacs' -f C-h 'delete-region-or delete-backward-char'
+ble-bind -m 'emacs' -f C-i complete
+ble-bind -m 'emacs' -f C-j accept-line
+ble-bind -m 'emacs' -f C-k kill-forward-line
+ble-bind -m 'emacs' -f C-l clear-screen
+ble-bind -m 'emacs' -f C-m accept-single-line-or-newline
+ble-bind -m 'emacs' -f C-n 'forward-line history'
+ble-bind -m 'emacs' -f C-o accept-and-next
+ble-bind -m 'emacs' -f C-p 'backward-line history'
+ble-bind -m 'emacs' -f C-q emacs/quoted-insert
+ble-bind -m 'emacs' -s C-r '\C-x\C-_A1\a\C-x\C-_A0\a'
+ble-bind -m 'emacs' -f C-s history-isearch-forward
+ble-bind -m 'emacs' -x C-t fzf-file-widget
+ble-bind -m 'emacs' -f C-u kill-backward-line
+ble-bind -m 'emacs' -f C-v emacs/quoted-insert
+ble-bind -m 'emacs' -f C-w 'kill-region-or kill-backward-uword'
+ble-bind -m 'emacs' -f 'C-x !' 'complete show_menu:context=command'
+ble-bind -m 'emacs' -f 'C-x $' 'complete show_menu:context=variable'
+ble-bind -m 'emacs' -f 'C-x '\' sabbrev-expand
+ble-bind -m 'emacs' -f 'C-x (' start-keyboard-macro
+ble-bind -m 'emacs' -f 'C-x )' end-keyboard-macro
+ble-bind -m 'emacs' -f 'C-x *' 'complete insert_all:context=glob'
+ble-bind -m 'emacs' -f 'C-x ,' history-nsearch-backward-again
+ble-bind -m 'emacs' -f 'C-x .' history-nsearch-forward-again
+ble-bind -m 'emacs' -f 'C-x /' 'complete show_menu:context=filename'
+ble-bind -m 'emacs' -f 'C-x <' history-nsearch-backward
+ble-bind -m 'emacs' -f 'C-x >' history-nsearch-forward
+ble-bind -m 'emacs' -f 'C-x @' 'complete show_menu:context=hostname'
+ble-bind -m 'emacs' -f 'C-x P' print-keyboard-macro
+ble-bind -m 'emacs' -f 'C-x U' emacs/redo
+ble-bind -m 'emacs' -f 'C-x e' call-keyboard-macro
+ble-bind -m 'emacs' -f 'C-x g' 'complete show_menu:context=glob'
+ble-bind -m 'emacs' -f 'C-x n' history-substring-search-forward
+ble-bind -m 'emacs' -f 'C-x p' history-substring-search-backward
+ble-bind -m 'emacs' -f 'C-x u' emacs/undo
+ble-bind -m 'emacs' -f 'C-x ~' 'complete show_menu:context=username'
+ble-bind -m 'emacs' -f 'C-x up' history-search-backward
+ble-bind -m 'emacs' -f 'C-x down' history-search-forward
+ble-bind -m 'emacs' -s 'C-x C-_ A 0 C-g' 
+ble-bind -m 'emacs' -x 'C-x C-_ A 1 C-g' '__atuin_widget_run 0'
+ble-bind -m 'emacs' -x 'C-x C-_ A 4 C-g' '__atuin_widget_run 3'
+ble-bind -m 'emacs' -f 'C-x C-e' edit-and-execute-command
+ble-bind -m 'emacs' -f 'C-x C-g' bell
+ble-bind -m 'emacs' -f 'C-x C-n' history-search-forward
+ble-bind -m 'emacs' -f 'C-x C-p' history-search-backward
+ble-bind -m 'emacs' -f 'C-x C-r' dabbrev-expand
+ble-bind -m 'emacs' -f 'C-x C-u' emacs/undo
+ble-bind -m 'emacs' -f 'C-x C-v' display-shell-version
+ble-bind -m 'emacs' -f 'C-x C-x' exchange-point-and-mark
+ble-bind -m 'emacs' -f 'C-x C-S-u' emacs/redo
+ble-bind -m 'emacs' -f C-y yank
+ble-bind -m 'emacs' -c C-z fg
+ble-bind -m 'emacs' -f C-DEL emacs/undo
+ble-bind -m 'emacs' -f C-insert 'copy-region-or copy-backward-uword'
+ble-bind -m 'emacs' -f C-home beginning-of-text
+ble-bind -m 'emacs' -f C-prior history-beginning
+ble-bind -m 'emacs' -f C-delete delete-forward-cword
+ble-bind -m 'emacs' -f C-end end-of-text
+ble-bind -m 'emacs' -f C-next history-end
+ble-bind -m 'emacs' -f C-up history-prev
+ble-bind -m 'emacs' -f C-down history-next
+ble-bind -m 'emacs' -f C-right forward-cword
+ble-bind -m 'emacs' -f C-left backward-cword
+ble-bind -m 'emacs' -f C-S-a '@marked beginning-of-line'
+ble-bind -m 'emacs' -f C-S-b '@marked backward-char'
+ble-bind -m 'emacs' -f C-S-e '@marked end-of-line'
+ble-bind -m 'emacs' -f C-S-f '@marked forward-char'
+ble-bind -m 'emacs' -f C-S-i 'menu-complete backward'
+ble-bind -m 'emacs' -f C-S-n '@marked forward-line'
+ble-bind -m 'emacs' -f C-S-p '@marked backward-line'
+ble-bind -m 'emacs' -f C-S-home '@marked beginning-of-text'
+ble-bind -m 'emacs' -f C-S-end '@marked end-of-text'
+ble-bind -m 'emacs' -f C-S-right '@marked forward-cword'
+ble-bind -m 'emacs' -f C-S-left '@marked backward-cword'
+ble-bind -m 'emacs' -f M-BS copy-backward-sword
+ble-bind -m 'emacs' -f M-TAB 'complete context=dynamic-history'
+ble-bind -m 'emacs' -f M-RET newline
+ble-bind -m 'emacs' -f M-SP set-mark
+ble-bind -m 'emacs' -f 'M-!' 'complete context=command'
+ble-bind -m 'emacs' -f 'M-#' insert-comment
+ble-bind -m 'emacs' -f 'M-$' 'complete context=variable'
+ble-bind -m 'emacs' -f 'M-&' tilde-expand
+ble-bind -m 'emacs' -f M-\' sabbrev-expand
+ble-bind -m 'emacs' -f 'M-*' 'complete insert_all'
+ble-bind -m 'emacs' -f M-- append-arg
+ble-bind -m 'emacs' -f M-. insert-last-argument
+ble-bind -m 'emacs' -f M-/ 'complete context=filename'
+ble-bind -m 'emacs' -f M-0 append-arg
+ble-bind -m 'emacs' -f M-1 append-arg
+ble-bind -m 'emacs' -f M-2 append-arg
+ble-bind -m 'emacs' -f M-3 append-arg
+ble-bind -m 'emacs' -f M-4 append-arg
+ble-bind -m 'emacs' -f M-5 append-arg
+ble-bind -m 'emacs' -f M-6 append-arg
+ble-bind -m 'emacs' -f M-7 append-arg
+ble-bind -m 'emacs' -f M-8 append-arg
+ble-bind -m 'emacs' -f M-9 append-arg
+ble-bind -m 'emacs' -f 'M-<' history-beginning
+ble-bind -m 'emacs' -f 'M->' history-end
+ble-bind -m 'emacs' -f 'M-?' 'complete show_menu'
+ble-bind -m 'emacs' -f M-@ 'complete context=hostname'
+ble-bind -m 'emacs' -f M-B '@marked backward-cword'
+ble-bind -m 'emacs' -f M-F '@marked forward-cword'
+ble-bind -m 'emacs' -f M-M '@marked non-space-beginning-of-line'
+ble-bind -m 'emacs' -f M-Y 'yank-pop backward'
+ble-bind -m 'emacs' -f 'M-[ 5 C' forward-cword
+ble-bind -m 'emacs' -f 'M-[ 5 D' backward-cword
+ble-bind -m 'emacs' -f 'M-\' delete-horizontal-space
+ble-bind -m 'emacs' -f 'M-^' history-expand-line
+ble-bind -m 'emacs' -f M-_ insert-last-argument
+ble-bind -m 'emacs' -f M-b backward-cword
+ble-bind -m 'emacs' -c M-c 'ble/util/eval-stdout "__fzf_cd__"'
+ble-bind -m 'emacs' -f M-d kill-forward-cword
+ble-bind -m 'emacs' -f M-f forward-cword
+ble-bind -m 'emacs' -f M-g 'complete context=glob'
+ble-bind -m 'emacs' -f M-h kill-backward-cword
+ble-bind -m 'emacs' -f M-l downcase-eword
+ble-bind -m 'emacs' -f M-m non-space-beginning-of-line
+ble-bind -m 'emacs' -f M-r emacs/revert
+ble-bind -m 'emacs' -f M-t transpose-ewords
+ble-bind -m 'emacs' -f M-u upcase-eword
+ble-bind -m 'emacs' -f M-w 'copy-region-or copy-backward-uword'
+ble-bind -m 'emacs' -f M-x emacs/execute-named-command
+ble-bind -m 'emacs' -f M-y yank-pop
+ble-bind -m 'emacs' -f M-z zap-to-char
+ble-bind -m 'emacs' -f 'M-{' 'complete insert_braces'
+ble-bind -m 'emacs' -f 'M-~' 'complete context=username'
+ble-bind -m 'emacs' -f M-DEL copy-backward-sword
+ble-bind -m 'emacs' -f M-delete copy-forward-sword
+ble-bind -m 'emacs' -f M-right forward-sword
+ble-bind -m 'emacs' -f M-left backward-sword
+ble-bind -m 'emacs' -f M-S-b '@marked backward-cword'
+ble-bind -m 'emacs' -f M-S-f '@marked forward-cword'
+ble-bind -m 'emacs' -f M-S-m '@marked non-space-beginning-of-line'
+ble-bind -m 'emacs' -f M-S-y 'yank-pop backward'
+ble-bind -m 'emacs' -f M-S-right '@marked forward-sword'
+ble-bind -m 'emacs' -f M-S-left '@marked backward-sword'
+ble-bind -m 'emacs' -f 'C-M-?' copy-backward-sword
+ble-bind -m 'emacs' -f 'C-M-]' character-search-backward
+ble-bind -m 'emacs' -f C-M-e shell-expand-line
+ble-bind -m 'emacs' -f C-M-g bell
+ble-bind -m 'emacs' -f C-M-h copy-backward-sword
+ble-bind -m 'emacs' -f C-M-i 'complete context=dynamic-history'
+ble-bind -m 'emacs' -f C-M-l redraw-line
+ble-bind -m 'emacs' -f C-M-m newline
+ble-bind -m 'emacs' -f C-M-u universal-arg
+ble-bind -m 'emacs' -f C-M-y insert-nth-argument
+_ble_decode_kbd__c2k=([0]="NUL" [1]="SOH" [2]="STX" [3]="ETX" [4]="EOT" [5]="ENQ" [6]="ACK" [7]="BEL" [8]="BS" [9]="TAB" [10]="LF" [11]="VT" [12]="FF" [13]="RET" [14]="SO" [15]="SI" [16]="DLE" [17]="DC1" [18]="DC2" [19]="DC3" [20]="DC4" [21]="NAK" [22]="SYN" [23]="ETB" [24]="CAN" [25]="EM" [26]="SUB" [27]="ESC" [28]="FS" [29]="GS" [30]="RS" [31]="US" [32]="SP" [127]="DEL" [128]="PAD" [129]="HOP" [130]="BPH" [131]="NBH" [132]="IND" [133]="NEL" [134]="SSA" [135]="ESA" [136]="HTS" [137]="HTJ" [138]="VTS" [139]="PLD" [140]="PLU" [141]="RI" [142]="SS2" [143]="SS3" [144]="DCS" [145]="PU1" [146]="PU2" [147]="STS" [148]="CCH" [149]="MW" [150]="SPA" [151]="EPA" [152]="SOS" [153]="SGCI" [154]="SCI" [155]="CSI" [156]="ST" [157]="OSC" [158]="PM" [159]="APC" [1977]="@timeout" [1978]="@prefixO" [1979]="@NUL" [1980]="@ESC" [1114112]="__batch_char__" [1114113]="__defchar__" [1114114]="__default__" [1114115]="__before_widget__" [1114116]="__after_widget__" [1114117]="__attach__" [1114118]="__detach__" [1114119]="shift" [1114120]="alter" [1114121]="control" [1114122]="meta" [1114123]="super" [1114124]="hyper" [1114125]="__ignore__" [1114126]="__error__" [1114127]="__line_limit__" [1114128]="mouse" [1114129]="mouse_move" [1114130]="ac_enter" [1114131]="insert" [1114132]="home" [1114133]="prior" [1114134]="delete" [1114135]="end" [1114136]="next" [1114137]="find" [1114138]="select" [1114139]="f1" [1114140]="f2" [1114141]="f3" [1114142]="f4" [1114143]="f5" [1114144]="f6" [1114145]="f7" [1114146]="f8" [1114147]="f9" [1114148]="f10" [1114149]="f11" [1114150]="f12" [1114151]="f13" [1114152]="f14" [1114153]="f15" [1114154]="f16" [1114155]="f17" [1114156]="f18" [1114157]="f19" [1114158]="f20" [1114159]="paste_begin" [1114160]="paste_end" [1114161]="up" [1114162]="down" [1114163]="right" [1114164]="left" [1114165]="begin" [1114166]="focus" [1114167]="blur" [1114168]="capslock" [1114169]="scrolllock" [1114170]="numlock" [1114171]="print" [1114172]="pause" [1114173]="menu" [1114174]="f21" [1114175]="f22" [1114176]="f23" [1114177]="f24" [1114178]="f25" [1114179]="f26" [1114180]="f27" [1114181]="f28" [1114182]="f29" [1114183]="f30" [1114184]="f31" [1114185]="f32" [1114186]="f33" [1114187]="f34" [1114188]="f35" [1114189]="media_play" [1114190]="media_pause" [1114191]="media_play_pause" [1114192]="media_reverse" [1114193]="media_stop" [1114194]="media_fast_forward" [1114195]="media_rewind" [1114196]="media_track_next" [1114197]="media_track_prev" [1114198]="media_record" [1114199]="lower_volume" [1114200]="raise_volume" [1114201]="mute_volume" [1114202]="lshift" [1114203]="lcontrol" [1114204]="lalter" [1114205]="lsuper" [1114206]="lhyper" [1114207]="lmeta" [1114208]="rshift" [1114209]="rcontrol" [1114210]="ralter" [1114211]="rsuper" [1114212]="rhyper" [1114213]="rmeta" [1114214]="iso_shift3" [1114215]="iso_shift5" [1114216]="dsr0")
+_ble_decode_kbd__k2c=([xSSA]="134" [xLF]="10" [xDEL]="127" [xfocus]="1114166" [xf9]="1114147" [xf8]="1114146" [xlower_volume]="1114199" [xf1]="1114139" [xf3]="1114141" [xf34]="1114187" [xf2]="1114140" [xf35]="1114188" [xf5]="1114143" [xf32]="1114185" [xf4]="1114142" [xf33]="1114186" [xf7]="1114145" [xf30]="1114183" [xSYN]="22" [xf6]="1114144" [xf31]="1114184" [xVT]="11" [xpaste_end]="1114160" [x@ESC]="1980" [xSS3]="143" [xSS2]="142" [xSTS]="147" [xSTX]="2" [xup]="1114161" [xSI]="15" [xPLU]="140" [xSO]="14" [xSP]="32" [xmedia_track_prev]="1114197" [xlcontrol]="1114203" [xST]="156" [xCSI]="155" [xPLD]="139" [xshift]="1114119" [xHTS]="136" [xHTJ]="137" [xOSC]="157" [xETX]="3" [xac_enter]="1114130" [xmedia_reverse]="1114192" [xNAK]="21" [xETB]="23" [xEOT]="4" [xbegin]="1114165" [xpaste_begin]="1114159" [xpause]="1114172" [xNBH]="131" [xGS]="29" [xrhyper]="1114212" [xmedia_record]="1114198" [xPU2]="146" [xmenu]="1114173" [xPU1]="145" [x__defchar__]="1114113" [xrcontrol]="1114209" [xf18]="1114156" [xf19]="1114157" [xCAN]="24" [xmeta]="1114122" [xf10]="1114148" [xalter]="1114120" [xf11]="1114149" [xf12]="1114150" [xf13]="1114151" [xf14]="1114152" [xprior]="1114133" [xf15]="1114153" [xf16]="1114154" [xf17]="1114155" [xBS]="8" [xrsuper]="1114211" [xiso_shift3]="1114214" [xiso_shift5]="1114215" [xSPA]="150" [xnext]="1114136" [xmute_volume]="1114201" [xSOS]="152" [xACK]="6" [xSOH]="1" [xmouse_move]="1114129" [x@timeout]="1977" [xmedia_pause]="1114190" [xNUL]="0" [xmedia_rewind]="1114195" [xdelete]="1114134" [xleft]="1114164" [xnumlock]="1114170" [xSUB]="26" [xraise_volume]="1114200" [xRS]="30" [x@NUL]="1979" [xEPA]="151" [xhome]="1114132" [xRI]="141" [xf21]="1114174" [xf20]="1114158" [xf23]="1114176" [xf22]="1114175" [xf25]="1114178" [xf24]="1114177" [xf27]="1114180" [xf26]="1114179" [xDLE]="16" [xblur]="1114167" [xf29]="1114182" [xf28]="1114181" [xVTS]="138" [xAPC]="159" [xright]="1114163" [xcontrol]="1114121" [xCCH]="148" [xmouse]="1114128" [xHOP]="129" [xlhyper]="1114206" [xselect]="1114138" [xlalter]="1114204" [xBEL]="7" [xEM]="25" [xPAD]="128" [xscrolllock]="1114169" [xDCS]="144" [xFS]="28" [xmedia_fast_forward]="1114194" [xend]="1114135" [xNEL]="133" [xcapslock]="1114168" [xfind]="1114137" [xFF]="12" [xHT]="9" [x__error__]="1114126" [xDC1]="17" [xDC2]="18" [xlsuper]="1114205" [xDC3]="19" [xDC4]="20" [x__default__]="1114114" [xMW]="149" [xrmeta]="1114213" [x__ignore__]="1114125" [xUS]="31" [x__line_limit__]="1114127" [x__detach__]="1114118" [xmedia_track_next]="1114196" [xIND]="132" [xhyper]="1114124" [xlshift]="1114202" [xTAB]="9" [xESA]="135" [xESC]="27" [xinsert]="1114131" [xSCI]="154" [xSGCI]="153" [xPM]="158" [xRET]="13" [xdsr0]="1114216" [xBPH]="130" [x__batch_char__]="1114112" [xmedia_play]="1114189" [x__after_widget__]="1114116" [xENQ]="5" [xmedia_stop]="1114193" [x__before_widget__]="1114115" [xmedia_play_pause]="1114191" [xrshift]="1114208" [xlmeta]="1114207" [xralter]="1114210" [xCR]="13" [xdown]="1114162" [x@prefixO]="1978" [x__attach__]="1114117" [xprint]="1114171" [xsuper]="1114123" )
+_ble_decode_kbd__n="105"
+_ble_decode_KCODE_AFTER_WIDGET="1114116"
+_ble_decode_KCODE_ALTER="1114120"
+_ble_decode_KCODE_ATTACH="1114117"
+_ble_decode_KCODE_BATCH_CHAR="1114112"
+_ble_decode_KCODE_BEFORE_WIDGET="1114115"
+_ble_decode_KCODE_CONTROL="1114121"
+_ble_decode_KCODE_DEFAULT="1114114"
+_ble_decode_KCODE_DEFCHAR="1114113"
+_ble_decode_KCODE_DETACH="1114118"
+_ble_decode_KCODE_ERROR="1114126"
+_ble_decode_KCODE_HYPER="1114124"
+_ble_decode_KCODE_IGNORE="1114125"
+_ble_decode_KCODE_LINE_LIMIT="1114127"
+_ble_decode_KCODE_META="1114122"
+_ble_decode_KCODE_MOUSE="1114128"
+_ble_decode_KCODE_MOUSE_MOVE="1114129"
+_ble_decode_KCODE_SHIFT="1114119"
+_ble_decode_KCODE_SUPER="1114123"
+_ble_decode_cmap_=([27]="_" [143]="_" [155]="_")
+_ble_decode_cmap__143=([32]="32" [65]="1114161" [66]="1114162" [67]="1114163" [68]="1114164" [69]="1114165" [70]="1114135" [72]="1114132" [73]="9" [77]="13" [79]="1114167" [80]="1114139" [81]="1114140" [82]="1114141" [83]="1114142" [88]="61" [97]="68223025" [98]="68223026" [99]="68223027" [100]="68223028" [106]="42" [107]="43" [108]="44" [109]="" [110]="46" [111]="47" [112]="48" [113]="49" [114]="50" [115]="51" [116]="52" [117]="53" [118]="54" [119]="55" [120]="56" [121]="57")
+_ble_decode_cmap__155=([48]="_" [49]="_" [50]="_" [51]="_" [52]="_" [53]="_" [54]="_" [55]="_" [56]="_" [74]="68222999" [75]="34668567" [76]="68222995" [80]="1114134" [90]="33554441" [91]="_" [97]="34668593" [98]="34668594" [99]="34668595" [100]="34668596")
+_ble_decode_cmap__155_48=([110]="1114216")
+_ble_decode_cmap__155_49=([122]="1114137")
+_ble_decode_cmap__155_50=([36]="34668563" [49]="_" [50]="_" [51]="_" [52]="_" [53]="_" [54]="_" [56]="_" [57]="_" [74]="34668564" [75]="34668566")
+_ble_decode_cmap__155_50_49=([52]="_" [54]="_")
+_ble_decode_cmap__155_50_49_52=([122]="1114132")
+_ble_decode_cmap__155_50_49_54=([122]="1114136")
+_ble_decode_cmap__155_50_50=([48]="_" [50]="_" [52]="_" [53]="_" [54]="_" [55]="_" [56]="_" [57]="_")
+_ble_decode_cmap__155_50_50_48=([122]="1114135")
+_ble_decode_cmap__155_50_50_50=([122]="1114133")
+_ble_decode_cmap__155_50_50_52=([122]="1114139")
+_ble_decode_cmap__155_50_50_53=([122]="1114140")
+_ble_decode_cmap__155_50_50_54=([122]="1114141")
+_ble_decode_cmap__155_50_50_55=([122]="1114142")
+_ble_decode_cmap__155_50_50_56=([122]="1114143")
+_ble_decode_cmap__155_50_50_57=([122]="1114144")
+_ble_decode_cmap__155_50_51=([36]="34668581" [48]="_" [49]="_" [50]="_" [51]="_" [52]="_" [53]="_")
+_ble_decode_cmap__155_50_51_48=([122]="1114145")
+_ble_decode_cmap__155_50_51_49=([122]="1114146")
+_ble_decode_cmap__155_50_51_50=([122]="1114147")
+_ble_decode_cmap__155_50_51_51=([122]="1114148")
+_ble_decode_cmap__155_50_51_52=([122]="1114149")
+_ble_decode_cmap__155_50_51_53=([122]="1114150")
+_ble_decode_cmap__155_50_52=([36]="34668582" [55]="_")
+_ble_decode_cmap__155_50_52_55=([122]="1114131")
+_ble_decode_cmap__155_50_53=([36]="34668583")
+_ble_decode_cmap__155_50_54=([36]="34668584")
+_ble_decode_cmap__155_50_56=([36]="34668585")
+_ble_decode_cmap__155_50_57=([36]="34668586")
+_ble_decode_cmap__155_51=([36]="34668566" [49]="_" [50]="_" [51]="_" [52]="_")
+_ble_decode_cmap__155_51_49=([36]="34668587")
+_ble_decode_cmap__155_51_50=([36]="34668588")
+_ble_decode_cmap__155_51_51=([36]="34668589")
+_ble_decode_cmap__155_51_52=([36]="34668590")
+_ble_decode_cmap__155_52=([104]="1114131" [108]="34668563" [122]="1114138")
+_ble_decode_cmap__155_53=([36]="34668565")
+_ble_decode_cmap__155_54=([36]="34668568")
+_ble_decode_cmap__155_55=([36]="34668564")
+_ble_decode_cmap__155_56=([36]="34668567")
+_ble_decode_cmap__155_91=([65]="1114139" [66]="1114140" [67]="1114141" [68]="1114142" [69]="1114143")
+_ble_decode_cmap__27=([63]="_" [79]="_" [91]="_")
+_ble_decode_cmap__27_63=([32]="32" [73]="9" [77]="13" [88]="61" [106]="42" [107]="43" [108]="44" [110]="46" [111]="47" [112]="48" [113]="49" [114]="50" [115]="51" [116]="52" [117]="53" [118]="54" [119]="55" [120]="56" [121]="57")
+_ble_decode_cmap__27_79=([32]="32" [65]="1114161" [66]="1114162" [67]="1114163" [68]="1114164" [69]="1114165" [70]="1114135" [72]="1114132" [73]="9" [77]="13" [79]="1114167" [80]="1114139" [81]="1114140" [82]="1114141" [83]="1114142" [88]="61" [97]="68223025" [98]="68223026" [99]="68223027" [100]="68223028" [106]="42" [107]="43" [108]="44" [110]="46" [111]="47" [112]="48" [113]="49" [114]="50" [115]="51" [116]="52" [117]="53" [118]="54" [119]="55" [120]="56" [121]="57")
+_ble_decode_cmap__27_91=([48]="_" [49]="_" [50]="_" [51]="_" [52]="_" [53]="_" [54]="_" [55]="_" [56]="_" [74]="68222999" [75]="34668567" [76]="68222995" [80]="1114134" [90]="33554441" [91]="_" [97]="34668593" [98]="34668594" [99]="34668595" [100]="34668596")
+_ble_decode_cmap__27_91_48=([110]="1114216")
+_ble_decode_cmap__27_91_49=([36]="34668564" [49]="_" [50]="_" [51]="_" [52]="_" [53]="_" [55]="_" [56]="_" [57]="_" [122]="1114137")
+_ble_decode_cmap__27_91_49_49=([36]="34668571")
+_ble_decode_cmap__27_91_49_50=([36]="34668572")
+_ble_decode_cmap__27_91_49_51=([36]="34668573")
+_ble_decode_cmap__27_91_49_52=([36]="34668574")
+_ble_decode_cmap__27_91_49_53=([36]="34668575")
+_ble_decode_cmap__27_91_49_55=([36]="34668576")
+_ble_decode_cmap__27_91_49_56=([36]="34668577")
+_ble_decode_cmap__27_91_49_57=([36]="34668578")
+_ble_decode_cmap__27_91_50=([36]="34668563" [48]="_" [49]="_" [50]="_" [51]="_" [52]="_" [53]="_" [54]="_" [56]="_" [57]="_" [74]="34668564" [75]="34668566")
+_ble_decode_cmap__27_91_50_48=([36]="34668579" [48]="_" [49]="_")
+_ble_decode_cmap__27_91_50_48_48=([36]="34668591")
+_ble_decode_cmap__27_91_50_48_49=([36]="34668592")
+_ble_decode_cmap__27_91_50_49=([36]="34668580" [52]="_" [54]="_")
+_ble_decode_cmap__27_91_50_49_52=([122]="1114132")
+_ble_decode_cmap__27_91_50_49_54=([122]="1114136")
+_ble_decode_cmap__27_91_50_50=([48]="_" [50]="_" [52]="_" [53]="_" [54]="_" [55]="_" [56]="_" [57]="_")
+_ble_decode_cmap__27_91_50_50_48=([122]="1114135")
+_ble_decode_cmap__27_91_50_50_50=([122]="1114133")
+_ble_decode_cmap__27_91_50_50_52=([122]="1114139")
+_ble_decode_cmap__27_91_50_50_53=([122]="1114140")
+_ble_decode_cmap__27_91_50_50_54=([122]="1114141")
+_ble_decode_cmap__27_91_50_50_55=([122]="1114142")
+_ble_decode_cmap__27_91_50_50_56=([122]="1114143")
+_ble_decode_cmap__27_91_50_50_57=([122]="1114144")
+_ble_decode_cmap__27_91_50_51=([36]="34668581" [48]="_" [49]="_" [50]="_" [51]="_" [52]="_" [53]="_")
+_ble_decode_cmap__27_91_50_51_48=([122]="1114145")
+_ble_decode_cmap__27_91_50_51_49=([122]="1114146")
+_ble_decode_cmap__27_91_50_51_50=([122]="1114147")
+_ble_decode_cmap__27_91_50_51_51=([122]="1114148")
+_ble_decode_cmap__27_91_50_51_52=([122]="1114149")
+_ble_decode_cmap__27_91_50_51_53=([122]="1114150")
+_ble_decode_cmap__27_91_50_52=([36]="34668582" [55]="_")
+_ble_decode_cmap__27_91_50_52_55=([122]="1114131")
+_ble_decode_cmap__27_91_50_53=([36]="34668583")
+_ble_decode_cmap__27_91_50_54=([36]="34668584")
+_ble_decode_cmap__27_91_50_56=([36]="34668585")
+_ble_decode_cmap__27_91_50_57=([36]="34668586")
+_ble_decode_cmap__27_91_51=([36]="34668566" [49]="_" [50]="_" [51]="_" [52]="_")
+_ble_decode_cmap__27_91_51_49=([36]="34668587")
+_ble_decode_cmap__27_91_51_50=([36]="34668588")
+_ble_decode_cmap__27_91_51_51=([36]="34668589")
+_ble_decode_cmap__27_91_51_52=([36]="34668590")
+_ble_decode_cmap__27_91_52=([36]="34668567" [104]="1114131" [108]="34668563" [122]="1114138")
+_ble_decode_cmap__27_91_53=([36]="34668565")
+_ble_decode_cmap__27_91_54=([36]="34668568")
+_ble_decode_cmap__27_91_55=([36]="34668564")
+_ble_decode_cmap__27_91_56=([36]="34668567")
+_ble_decode_cmap__27_91_91=([65]="1114139" [66]="1114140" [67]="1114141" [68]="1114142" [69]="1114143")
+_ble_decode_cmap_cache_hash="015701ad744b9fdedb46d589a94ac9af5a8fdb60"
+_ble_decode_csimap_alpha=([65]="1114161" [66]="1114162" [67]="1114163" [68]="1114164" [69]="1114165" [70]="1114135" [72]="1114132" [73]="1114166" [77]="13" [79]="1114167" [80]="1114139" [81]="1114140" [82]="1114141" [83]="1114142" [88]="61" [106]="42" [107]="43" [108]="44" [109]="45" [110]="46" [111]="47" [112]="48" [113]="49" [114]="50" [115]="51" [116]="52" [117]="53" [118]="54" [119]="55" [120]="56" [121]="57")
+_ble_decode_csimap_dict=([13]="alpha:77" [42]="alpha:106" [43]="alpha:107" [44]="alpha:108" [45]="alpha:109" [46]="alpha:110" [47]="alpha:111" [48]="alpha:112" [49]="alpha:113" [50]="alpha:114" [51]="alpha:115" [52]="alpha:116" [53]="alpha:117" [54]="alpha:118" [55]="alpha:119" [56]="alpha:120" [57]="alpha:121" [61]="alpha:88" [1114131]="tilde:2" [1114132]="tilde:1" [1114133]="tilde:5" [1114134]="tilde:3" [1114135]="tilde:4" [1114136]="tilde:6" [1114139]="tilde:11" [1114140]="tilde:12" [1114141]="tilde:13" [1114142]="tilde:14" [1114143]="tilde:15" [1114144]="tilde:17" [1114145]="tilde:18" [1114146]="tilde:19" [1114147]="tilde:20" [1114148]="tilde:21" [1114149]="tilde:23" [1114150]="tilde:24" [1114151]="tilde:25" [1114152]="tilde:26" [1114153]="tilde:28" [1114154]="tilde:29" [1114155]="tilde:31" [1114156]="tilde:32" [1114157]="tilde:33" [1114158]="tilde:34" [1114159]="tilde:200" [1114160]="tilde:201" [1114161]="alpha:65" [1114162]="alpha:66" [1114163]="alpha:67" [1114164]="alpha:68" [1114165]="alpha:69" [1114166]="alpha:73" [1114167]="alpha:79")
+_ble_decode_csimap_kitty_u=([57358]="capslock" [57359]="scrolllock" [57360]="numlock" [57361]="print" [57362]="pause" [57363]="menu" [57376]="f13" [57377]="f14" [57378]="f15" [57379]="f16" [57380]="f17" [57381]="f18" [57382]="f19" [57383]="f20" [57384]="f21" [57385]="f22" [57386]="f23" [57387]="f24" [57388]="f25" [57389]="f26" [57390]="f27" [57391]="f28" [57392]="f29" [57393]="f30" [57394]="f31" [57395]="f32" [57396]="f33" [57397]="f34" [57398]="f35" [57399]="0" [57400]="1" [57401]="2" [57402]="3" [57403]="4" [57404]="5" [57405]="6" [57406]="7" [57407]="8" [57408]="9" [57409]="." [57410]="/" [57411]="*" [57412]="-" [57413]="+" [57414]="RET" [57415]="=" [57416]="," [57417]="left" [57418]="right" [57419]="up" [57420]="down" [57421]="prior" [57422]="next" [57423]="home" [57424]="end" [57425]="insert" [57426]="delete" [57427]="begin" [57428]="media_play" [57429]="media_pause" [57430]="media_play_pause" [57431]="media_reverse" [57432]="media_stop" [57433]="media_fast_forward" [57434]="media_rewind" [57435]="media_track_next" [57436]="media_track_prev" [57437]="media_record" [57438]="lower_volume" [57439]="raise_volume" [57440]="mute_volume" [57441]="lshift" [57442]="lcontrol" [57443]="lalter" [57444]="lsuper" [57445]="lhyper" [57446]="lmeta" [57447]="rshift" [57448]="rcontrol" [57449]="ralter" [57450]="rsuper" [57451]="rhyper" [57452]="rmeta" [57453]="iso_shift3" [57454]="iso_shift5")
+_ble_decode_csimap_tilde=([1]="1114132" [2]="1114131" [3]="1114134" [4]="1114135" [5]="1114133" [6]="1114136" [7]="1114132" [8]="1114135" [11]="1114139" [12]="1114140" [13]="1114141" [14]="1114142" [15]="1114143" [17]="1114144" [18]="1114145" [19]="1114146" [20]="1114147" [21]="1114148" [23]="1114149" [24]="1114150" [25]="1114151" [26]="1114152" [28]="1114153" [29]="1114154" [31]="1114155" [32]="1114156" [33]="1114157" [34]="1114158" [200]="1114159" [201]="1114160")
+ble/decode/keymap#.register isearch
+_ble_decode_isearch_kmap_=([8]="1:ble/widget/isearch/prev" [13]="1:ble/widget/isearch/exit" [127]="1:ble/widget/isearch/prev" [1114113]="1:ble/widget/isearch/self-insert" [1114114]="1:ble/widget/isearch/exit-default" [1114127]="1:ble/widget/nop" [67108877]="1:ble/widget/isearch/accept-line" [67108927]="1:ble/widget/isearch/prev" [67108967]="1:ble/widget/isearch/cancel" [67108968]="1:ble/widget/isearch/prev" [67108970]="1:ble/widget/isearch/accept-line" [67108973]="1:ble/widget/isearch/exit" [67108978]="1:ble/widget/isearch/backward" [67108979]="1:ble/widget/isearch/forward" [67108984]="_" [201326695]="1:ble/widget/isearch/cancel")
+_ble_decode_isearch_kmap__67108984=([67108967]="1:ble/widget/isearch/cancel")
+ble/decode/keymap#.onload isearch
+ble/decode/keymap#.register nsearch
+_ble_decode_nsearch_kmap_=([13]="1:ble/widget/nsearch/exit" [1114114]="1:ble/widget/nsearch/exit-default" [1114127]="1:ble/widget/nop" [1114133]="1:ble/widget/nsearch/backward" [1114136]="1:ble/widget/nsearch/forward" [1114161]="1:ble/widget/nsearch/backward" [1114162]="1:ble/widget/nsearch/forward" [67108877]="1:ble/widget/nsearch/accept-line" [67108967]="1:ble/widget/nsearch/cancel" [67108970]="1:ble/widget/nsearch/accept-line" [67108973]="1:ble/widget/nsearch/exit" [67108974]="1:ble/widget/nsearch/forward" [67108976]="1:ble/widget/nsearch/backward" [67108978]="1:ble/widget/nsearch/backward" [67108979]="1:ble/widget/nsearch/forward" [67108984]="_" [201326695]="1:ble/widget/nsearch/cancel")
+_ble_decode_nsearch_kmap__67108984=([67108967]="1:ble/widget/nsearch/cancel")
+ble/decode/keymap#.onload nsearch
+ble/decode/keymap#.register emacs
+_ble_decode_emacs_kmap_=([0]="1:ble/widget/set-mark" [8]="1:ble/widget/delete-region-or delete-backward-char" [9]="1:ble/widget/complete" [13]="1:ble/widget/accept-single-line-or-newline" [32]="1:ble/widget/magic-space" [45]="1:ble/widget/append-arg" [47]="1:ble/widget/magic-slash" [48]="1:ble/widget/append-arg" [49]="1:ble/widget/append-arg" [50]="1:ble/widget/append-arg" [51]="1:ble/widget/append-arg" [52]="1:ble/widget/append-arg" [53]="1:ble/widget/append-arg" [54]="1:ble/widget/append-arg" [55]="1:ble/widget/append-arg" [56]="1:ble/widget/append-arg" [57]="1:ble/widget/append-arg" [127]="1:ble/widget/delete-region-or delete-backward-char" [1114112]="1:ble/widget/batch-insert" [1114113]="1:ble/widget/self-insert" [1114115]="1:ble/widget/emacs/__before_widget__" [1114116]="1:ble/widget/emacs/__after_widget__" [1114117]="1:ble/widget/safe/__attach__" [1114127]="1:ble/widget/__line_limit__" [1114130]="1:ble/widget/auto-complete-enter" [1114131]="1:ble/widget/overwrite-mode" [1114132]="1:ble/widget/beginning-of-line" [1114133]="1:ble/widget/history-search-backward" [1114134]="1:ble/widget/delete-region-or delete-forward-char" [1114135]="1:ble/widget/end-of-line" [1114136]="1:ble/widget/history-search-forward" [1114139]="1:ble/widget/command-help" [1114159]="1:ble/widget/emacs/bracketed-paste" [1114161]="1:ble/widget/.MACRO 24 31 65 52 7 24 31 65 48 7" [1114162]="1:ble/widget/forward-line history" [1114163]="1:ble/widget/forward-char" [1114164]="1:ble/widget/backward-char" [33554441]="1:ble/widget/menu-complete backward" [34668563]="1:ble/widget/yank" [34668564]="1:ble/widget/@marked beginning-of-line" [34668566]="1:ble/widget/kill-region-or kill-backward-uword" [34668567]="1:ble/widget/@marked end-of-line" [34668593]="1:ble/widget/@marked backward-line" [34668594]="1:ble/widget/@marked forward-line" [34668595]="1:ble/widget/@marked forward-char" [34668596]="1:ble/widget/@marked backward-char" [67108872]="1:ble/widget/emacs/undo" [67108873]="1:ble/widget/menu-complete" [67108877]="1:ble/widget/accept-line" [67108896]="1:ble/widget/set-mark" [67108909]="1:ble/widget/append-arg" [67108911]="1:ble/widget/emacs/undo" [67108912]="1:ble/widget/append-arg" [67108913]="1:ble/widget/append-arg" [67108914]="1:ble/widget/append-arg" [67108915]="1:ble/widget/append-arg" [67108916]="1:ble/widget/append-arg" [67108917]="1:ble/widget/append-arg" [67108918]="1:ble/widget/append-arg" [67108919]="1:ble/widget/append-arg" [67108920]="1:ble/widget/append-arg" [67108921]="1:ble/widget/append-arg" [67108927]="1:ble/widget/delete-region-or delete-backward-char" [67108928]="1:ble/widget/set-mark" [67108956]="1:ble/widget/bell" [67108957]="1:ble/widget/character-search-forward" [67108958]="1:ble/widget/bell" [67108959]="1:ble/widget/emacs/undo" [67108961]="1:ble/widget/beginning-of-line" [67108962]="1:ble/widget/backward-char" [67108963]="1:ble/widget/discard-line" [67108964]="1:ble/widget/delete-region-or delete-forward-char-or-exit" [67108965]="1:ble/widget/end-of-line" [67108966]="1:ble/widget/forward-char" [67108967]="1:ble/widget/bell" [67108968]="1:ble/widget/delete-region-or delete-backward-char" [67108969]="1:ble/widget/complete" [67108970]="1:ble/widget/accept-line" [67108971]="1:ble/widget/kill-forward-line" [67108972]="1:ble/widget/clear-screen" [67108973]="1:ble/widget/accept-single-line-or-newline" [67108974]="1:ble/widget/forward-line history" [67108975]="1:ble/widget/accept-and-next" [67108976]="1:ble/widget/backward-line history" [67108977]="1:ble/widget/emacs/quoted-insert" [67108978]="1:ble/widget/.MACRO 24 31 65 49 7 24 31 65 48 7" [67108979]="1:ble/widget/history-isearch-forward" [67108980]="1:ble/widget/.EDIT_COMMAND 'fzf-file-widget'" [67108981]="1:ble/widget/kill-backward-line" [67108982]="1:ble/widget/emacs/quoted-insert" [67108983]="1:ble/widget/kill-region-or kill-backward-uword" [67108984]="_" [67108985]="1:ble/widget/yank" [67108986]="1:ble/widget/.SHELL_COMMAND 'fg'" [67108991]="1:ble/widget/emacs/undo" [68222995]="1:ble/widget/copy-region-or copy-backward-uword" [68222996]="1:ble/widget/beginning-of-text" [68222997]="1:ble/widget/history-beginning" [68222998]="1:ble/widget/delete-forward-cword" [68222999]="1:ble/widget/end-of-text" [68223000]="1:ble/widget/history-end" [68223025]="1:ble/widget/history-prev" [68223026]="1:ble/widget/history-next" [68223027]="1:ble/widget/forward-cword" [68223028]="1:ble/widget/backward-cword" [100663393]="1:ble/widget/@marked beginning-of-line" [100663394]="1:ble/widget/@marked backward-char" [100663397]="1:ble/widget/@marked end-of-line" [100663398]="1:ble/widget/@marked forward-char" [100663401]="1:ble/widget/menu-complete backward" [100663406]="1:ble/widget/@marked forward-line" [100663408]="1:ble/widget/@marked backward-line" [101777428]="1:ble/widget/@marked beginning-of-text" [101777431]="1:ble/widget/@marked end-of-text" [101777459]="1:ble/widget/@marked forward-cword" [101777460]="1:ble/widget/@marked backward-cword" [134217736]="1:ble/widget/copy-backward-sword" [134217737]="1:ble/widget/complete context=dynamic-history" [134217741]="1:ble/widget/newline" [134217760]="1:ble/widget/set-mark" [134217761]="1:ble/widget/complete context=command" [134217763]="1:ble/widget/insert-comment" [134217764]="1:ble/widget/complete context=variable" [134217766]="1:ble/widget/tilde-expand" [134217767]="1:ble/widget/sabbrev-expand" [134217770]="1:ble/widget/complete insert_all" [134217773]="1:ble/widget/append-arg" [134217774]="1:ble/widget/insert-last-argument" [134217775]="1:ble/widget/complete context=filename" [134217776]="1:ble/widget/append-arg" [134217777]="1:ble/widget/append-arg" [134217778]="1:ble/widget/append-arg" [134217779]="1:ble/widget/append-arg" [134217780]="1:ble/widget/append-arg" [134217781]="1:ble/widget/append-arg" [134217782]="1:ble/widget/append-arg" [134217783]="1:ble/widget/append-arg" [134217784]="1:ble/widget/append-arg" [134217785]="1:ble/widget/append-arg" [134217788]="1:ble/widget/history-beginning" [134217790]="1:ble/widget/history-end" [134217791]="1:ble/widget/complete show_menu" [134217792]="1:ble/widget/complete context=hostname" [134217794]="1:ble/widget/@marked backward-cword" [134217798]="1:ble/widget/@marked forward-cword" [134217805]="1:ble/widget/@marked non-space-beginning-of-line" [134217817]="1:ble/widget/yank-pop backward" [134217819]="_" [134217820]="1:ble/widget/delete-horizontal-space" [134217822]="1:ble/widget/history-expand-line" [134217823]="1:ble/widget/insert-last-argument" [134217826]="1:ble/widget/backward-cword" [134217827]="1:ble/widget/.SHELL_COMMAND 'ble/util/eval-stdout \"__fzf_cd__\"'" [134217828]="1:ble/widget/kill-forward-cword" [134217830]="1:ble/widget/forward-cword" [134217831]="1:ble/widget/complete context=glob" [134217832]="1:ble/widget/kill-backward-cword" [134217836]="1:ble/widget/downcase-eword" [134217837]="1:ble/widget/non-space-beginning-of-line" [134217842]="1:ble/widget/emacs/revert" [134217844]="1:ble/widget/transpose-ewords" [134217845]="1:ble/widget/upcase-eword" [134217847]="1:ble/widget/copy-region-or copy-backward-uword" [134217848]="1:ble/widget/emacs/execute-named-command" [134217849]="1:ble/widget/yank-pop" [134217850]="1:ble/widget/zap-to-char" [134217851]="1:ble/widget/complete insert_braces" [134217854]="1:ble/widget/complete context=username" [134217855]="1:ble/widget/copy-backward-sword" [135331862]="1:ble/widget/copy-forward-sword" [135331891]="1:ble/widget/forward-sword" [135331892]="1:ble/widget/backward-sword" [167772258]="1:ble/widget/@marked backward-cword" [167772262]="1:ble/widget/@marked forward-cword" [167772269]="1:ble/widget/@marked non-space-beginning-of-line" [167772281]="1:ble/widget/yank-pop backward" [168886323]="1:ble/widget/@marked forward-sword" [168886324]="1:ble/widget/@marked backward-sword" [201326655]="1:ble/widget/copy-backward-sword" [201326685]="1:ble/widget/character-search-backward" [201326693]="1:ble/widget/shell-expand-line" [201326695]="1:ble/widget/bell" [201326696]="1:ble/widget/copy-backward-sword" [201326697]="1:ble/widget/complete context=dynamic-history" [201326700]="1:ble/widget/redraw-line" [201326701]="1:ble/widget/newline" [201326709]="1:ble/widget/universal-arg" [201326713]="1:ble/widget/insert-nth-argument")
+_ble_decode_emacs_kmap__134217819=([53]="_")
+_ble_decode_emacs_kmap__134217819_53=([67]="1:ble/widget/forward-cword" [68]="1:ble/widget/backward-cword")
+_ble_decode_emacs_kmap__67108984=([33]="1:ble/widget/complete show_menu:context=command" [36]="1:ble/widget/complete show_menu:context=variable" [39]="1:ble/widget/sabbrev-expand" [40]="1:ble/widget/start-keyboard-macro" [41]="1:ble/widget/end-keyboard-macro" [42]="1:ble/widget/complete insert_all:context=glob" [44]="1:ble/widget/history-nsearch-backward-again" [46]="1:ble/widget/history-nsearch-forward-again" [47]="1:ble/widget/complete show_menu:context=filename" [60]="1:ble/widget/history-nsearch-backward" [62]="1:ble/widget/history-nsearch-forward" [64]="1:ble/widget/complete show_menu:context=hostname" [80]="1:ble/widget/print-keyboard-macro" [85]="1:ble/widget/emacs/redo" [101]="1:ble/widget/call-keyboard-macro" [103]="1:ble/widget/complete show_menu:context=glob" [110]="1:ble/widget/history-substring-search-forward" [112]="1:ble/widget/history-substring-search-backward" [117]="1:ble/widget/emacs/undo" [126]="1:ble/widget/complete show_menu:context=username" [1114161]="1:ble/widget/history-search-backward" [1114162]="1:ble/widget/history-search-forward" [67108959]="_" [67108965]="1:ble/widget/edit-and-execute-command" [67108967]="1:ble/widget/bell" [67108974]="1:ble/widget/history-search-forward" [67108976]="1:ble/widget/history-search-backward" [67108978]="1:ble/widget/dabbrev-expand" [67108981]="1:ble/widget/emacs/undo" [67108982]="1:ble/widget/display-shell-version" [67108984]="1:ble/widget/exchange-point-and-mark" [100663413]="1:ble/widget/emacs/redo")
+_ble_decode_emacs_kmap__67108984_67108959=([65]="_")
+_ble_decode_emacs_kmap__67108984_67108959_65=([48]="_" [49]="_" [52]="_")
+_ble_decode_emacs_kmap__67108984_67108959_65_48=([67108967]="1:ble/widget/.MACRO ")
+_ble_decode_emacs_kmap__67108984_67108959_65_49=([67108967]="1:ble/widget/.EDIT_COMMAND '__atuin_widget_run 0'")
+_ble_decode_emacs_kmap__67108984_67108959_65_52=([67108967]="1:ble/widget/.EDIT_COMMAND '__atuin_widget_run 3'")
+ble/decode/keymap#.onload emacs
