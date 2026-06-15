@@ -160,6 +160,21 @@ else
   printf 'skip: pager smoke test (python3 not available)\n' >&2
 fi
 
+# ---- ble.sh attach check (needs python3 + an installed ble.sh) ----
+BLESH=${BLESH:-$HOME/.local/share/blesh/ble.sh}
+if command -v python3 >/dev/null 2>&1 && [ -r "$BLESH" ]; then
+  CHECK="$ROOT/check-ble-attach.sh"
+  rc_good=$(mktemp); printf 'source %q --attach=prompt\n' "$BLESH" > "$rc_good"
+  rc_clob=$(mktemp); printf 'source %q --attach=prompt\nunset PROMPT_COMMAND\n' "$BLESH" > "$rc_clob"
+  rc_none=$(mktemp); : > "$rc_none"
+  "$CHECK" --quiet --rcfile "$rc_good"; assert_eq "attach: clean rc -> ok"        "0" "$?"
+  "$CHECK" --quiet --rcfile "$rc_clob"; assert_eq "attach: clobbered rc detected" "1" "$?"
+  "$CHECK" --quiet --rcfile "$rc_none"; assert_eq "attach: no-ble rc reported"    "2" "$?"
+  rm -f "$rc_good" "$rc_clob" "$rc_none"
+else
+  printf 'skip: ble.sh attach check (need python3 and ble.sh at %s)\n' "$BLESH" >&2
+fi
+
 # grep -c already prints 0 (and exits 1) on no matches; capture directly.
 PASS=$(grep -c '^p' "$RESULTS"); FAIL=$(grep -c '^f' "$RESULTS")
 printf '\n%d passed, %d failed\n' "$PASS" "$FAIL"
