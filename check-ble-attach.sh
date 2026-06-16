@@ -19,7 +19,7 @@ while (($#)); do
     --rcfile) rcfile=$2; shift 2 ;;
     --rcfile=*) rcfile=${1#*=}; shift ;;
     --quiet) quiet=1; shift ;;
-    -h|--help) sed -n '2,12p' "$0"; exit 0 ;;
+    -h|--help) sed -n '2,13p' "$0"; exit 0 ;;
     *) printf 'check-ble-attach: unknown arg: %s\n' "$1" >&2; exit 64 ;;
   esac
 done
@@ -43,7 +43,7 @@ EOF
 
 # Drive a real interactive shell under a pty; one prompt cycle then exit.
 python3 - "$wrap" >/dev/null 2>&1 <<'PYEOF'
-import os, pty, select, sys
+import os, pty, select, signal, sys
 wrap = sys.argv[1]
 pid, fd = pty.fork()
 if pid == 0:
@@ -57,6 +57,13 @@ while True:
     try: d = os.read(fd, 4096)
     except OSError: break
     if not d: break
+# Bound the runtime: never block on waitpid. Close the pty (SIGHUPs the child),
+# then SIGKILL defensively before reaping, so a startup fragment that blocks the
+# first prompt cannot hang this check.
+try: os.close(fd)
+except OSError: pass
+try: os.kill(pid, signal.SIGKILL)
+except OSError: pass
 try: os.waitpid(pid, 0)
 except OSError: pass
 PYEOF
