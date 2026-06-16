@@ -29,9 +29,11 @@ command -v python3 >/dev/null 2>&1 ||
   { say "skip: python3 not available (cannot allocate a pty to test attach)"; exit 77; }
 
 KBS_ATTACH_RESULT=$(mktemp) || exit 77
+wrap=''
+# Register cleanup before the second mktemp so the first temp can't leak if it fails.
+trap 'rm -f "$KBS_ATTACH_RESULT" "$wrap"' EXIT
 wrap=$(mktemp) || exit 77
 export KBS_ATTACH_RESULT KBS_ATTACH_RCFILE="$rcfile"
-trap 'rm -f "$KBS_ATTACH_RESULT" "$wrap"' EXIT
 
 # Static wrapper rc (quoted heredoc): source the target startup file, then append
 # a probe to PROMPT_COMMAND that records ble's attach state on the first prompt.
