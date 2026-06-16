@@ -66,6 +66,22 @@ and source kbs directly from `~/.bashrc`:
 source ~/.local/lib/kbs/kbs.bash
 ```
 
+### ble.sh attach check
+
+kbs reads the **live** ble.sh keymap, which only exists once ble.sh has *attached*.
+`./install.sh` therefore runs `check-ble-attach.sh`, which launches a throwaway
+interactive shell and confirms ble.sh attached. It never blocks the install — it
+just warns. The common cause of a warning is a `~/.bashrc.d/` fragment that
+**assigns** `PROMPT_COMMAND` (`PROMPT_COMMAND=...`) *after* `source ble.sh`, which on
+some bash/ble.sh versions removes ble.sh's deferred-attach hook. Fix it by
+**appending** instead — `PROMPT_COMMAND+=...` (or use ble.sh's `blehook PRECMD`).
+
+Run it any time:
+
+```sh
+./check-ble-attach.sh            # checks your ~/.bashrc; exit 0 = attached OK
+```
+
 ## Usage
 
 ```

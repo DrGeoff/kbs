@@ -17,7 +17,7 @@ jobs:
         run: sudo apt-get update && sudo apt-get install -y gawk
 
       - name: shellcheck
-        run: shellcheck install.sh uninstall.sh tests/run.sh tests/awk-lint.sh kbs.bash
+        run: shellcheck install.sh uninstall.sh check-ble-attach.sh tests/run.sh tests/awk-lint.sh kbs.bash
 
       - name: awk lint
         run: tests/awk-lint.sh
