@@ -17,3 +17,9 @@ printf 'source %s/kbs.bash\n' "$libdir" > "$loader"
 printf 'kbs installed to %s\n' "$libdir"
 printf 'loader written to %s\n' "$loader"
 printf 'Open a new shell (or: source %s), then run: kbs\n' "$loader"
+
+# Verify ble.sh actually attaches — kbs needs the live ble.sh keymap. Advisory:
+# this never aborts the install (|| true), but warns now if a clobbered
+# PROMPT_COMMAND has silently disabled ble.sh, instead of leaving you to discover
+# an inert kbs later. Exit codes: 0 ok, 1 clobber, 2 no ble.sh, 77 cannot test.
+"$here/check-ble-attach.sh" || true
