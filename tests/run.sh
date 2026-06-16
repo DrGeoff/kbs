@@ -10,7 +10,11 @@ FIX="$HERE/fixtures"
 # Results go to a temp file so counts survive subshells (piped assertions run in a
 # subshell; in-memory counters there would be lost — a false-green hazard).
 RESULTS=$(mktemp)
-trap 'rm -f "$RESULTS"' EXIT
+# rc_* are temp rcfiles created later by the ble.sh attach-check section; declare
+# them up front (empty) so this EXIT trap cleans them on any exit path, including
+# an interrupt mid-section. Empty values make the trap's rm -f a harmless no-op.
+rc_good='' rc_clob='' rc_none=''
+trap 'rm -f "$RESULTS" "$rc_good" "$rc_clob" "$rc_none"' EXIT
 
 # render <emit> <backend> <keymap> <level> <color> <examples>   (dump on stdin)
 render() {
@@ -170,7 +174,7 @@ if command -v python3 >/dev/null 2>&1 && [ -r "$BLESH" ]; then
   "$CHECK" --quiet --rcfile "$rc_good"; assert_eq "attach: clean rc -> ok"        "0" "$?"
   "$CHECK" --quiet --rcfile "$rc_clob"; assert_eq "attach: clobbered rc detected" "1" "$?"
   "$CHECK" --quiet --rcfile "$rc_none"; assert_eq "attach: no-ble rc reported"    "2" "$?"
-  rm -f "$rc_good" "$rc_clob" "$rc_none"
+  # cleanup is handled by the EXIT trap (rc_good/rc_clob/rc_none)
 else
   printf 'skip: ble.sh attach check (need python3 and ble.sh at %s)\n' "$BLESH" >&2
 fi

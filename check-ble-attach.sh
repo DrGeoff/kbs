@@ -68,6 +68,10 @@ try: os.waitpid(pid, 0)
 except OSError: pass
 PYEOF
 
+# Classify. Exit 1 is intentionally overloaded: it covers BOTH "ble loaded but did
+# not attach" (clobber, the final branch) AND "could not confirm" — the test shell
+# never produced a first prompt within the ~5s budget (e.g. an unusually slow
+# startup). install.sh treats every nonzero exit alike, so the conflation is safe.
 line=$(cat "$KBS_ATTACH_RESULT" 2>/dev/null)
 attached=${line%%|*} version=${line#*|}
 if [[ -z $line ]]; then
