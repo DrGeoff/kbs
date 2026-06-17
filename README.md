@@ -4,13 +4,14 @@
 
 `kbs` reads your shell's **live** key bindings and prints a friendly table so you can
 learn and remember the obscure shortcuts your shell provides (atuin, fzf, ble.sh,
-readline). It works under both ble.sh and plain readline, and is zero-dependency:
-just bash + awk.
+readline). It also lists the typed **commands** your shell makes available — live
+shell functions and aliases such as zoxide's `z`/`zi`, which are not key bindings.
+It works under both ble.sh and plain readline, and is zero-dependency: just bash + awk.
 
 ## Example output
 
-Running `kbs` in a ble.sh shell with atuin and fzf loaded (the table is colour-coded by
-source on a real terminal):
+Running `kbs` in a ble.sh shell with atuin, fzf, and zoxide loaded (the tables are
+colour-coded by source on a real terminal):
 
 ```
 ┌───────────────────────────────────────────────────────────────────┐
@@ -25,13 +26,29 @@ source on a real terminal):
 │ Ctrl-T  │ fzf    │ Pick file(s); insert path at cursor            │
 │ Ctrl-Z  │ ble.sh │ Resume the most recent suspended job (fg)      │
 └─────────┴────────┴────────────────────────────────────────────────┘
+
+┌────────────────────────────────────────────────────────────────┐
+│ Commands - type these (functions & aliases)                    │
+├─────────┬────────┬─────────────────────────────────────────────┤
+│ Command │ Source │ Action                                      │
+├─────────┼────────┼─────────────────────────────────────────────┤
+│ z       │ zoxide │ Jump to a "frecent" directory               │
+│ zi      │ zoxide │ Interactive directory pick (fzf-style menu) │
+└─────────┴────────┴─────────────────────────────────────────────┘
 Examples  - fzf ** trigger: type ** where you'd hit Tab
   vim **<Tab>      fuzzy-pick a file to edit
   cd **<Tab>       fuzzy-pick a sub-directory
   ssh **<Tab>      fuzzy-pick a host
   kill -9 **<Tab>  fuzzy-pick a process by PID
   Ctrl-R          search synced history; type to filter, Enter to run
+  z foo      jump to the frecent dir best matching "foo"
+  zi foo     interactive pick when several dirs match
 ```
+
+The **Commands** table is built live from `compgen -A function` and `alias`. Recognised
+commands (via `rules.dat`) get a source and action; internal helpers (`__zoxide_z`) and
+framework namespaces (`ble/...`) are hidden. Run `kbs -vv` to also list every other
+function and alias as source `user` — an unrecognised alias shows its real definition.
 
 ## Install
 

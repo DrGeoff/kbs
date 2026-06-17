@@ -24,6 +24,7 @@ render() {
 }
 ble_dump()  { printf '## ble emacs\n'; cat "$FIX/ble_emacs.txt"; }
 rl_dump()   { cat "$FIX/readline_raw.txt"; }
+cmd_dump()  { printf '## functions\n'; cat "$FIX/cmd_funcs.txt"; printf '## aliases\n'; cat "$FIX/cmd_aliases.txt"; }
 
 ok()   { printf 'p\n' >> "$RESULTS"; }
 bad()  { printf 'f\n' >> "$RESULTS"; printf 'FAIL: %s\n' "$1" >&2; }
@@ -178,6 +179,44 @@ if command -v python3 >/dev/null 2>&1 && [ -r "$BLESH" ]; then
 else
   printf 'skip: ble.sh attach check (need python3 and ble.sh at %s)\n' "$BLESH" >&2
 fi
+
+# ---- Commands table (functions + aliases) ----
+C_A=$(cmd_dump | render rows ble emacs A 0 0)
+C_C=$(cmd_dump | render rows ble emacs C 0 0)
+T_A=$(cmd_dump | render table ble emacs A 0 0)
+
+# recognized zoxide commands show at every level
+printf '%s' "$C_A" | assert_contains "cmd: z recognized as zoxide"  "z|zoxide"
+printf '%s' "$C_A" | assert_contains "cmd: zi recognized as zoxide" "zi|zoxide"
+# zoxide internals and framework namespaces never appear, at any level
+printf '%s' "$C_A" | assert_not_contains "cmd A: no zoxide internals"  "__zoxide_z"
+printf '%s' "$C_C" | assert_not_contains "cmd C: no zoxide internals"  "__zoxide_z"
+printf '%s' "$C_C" | assert_not_contains "cmd C: no ble/* namespace"   "ble/widget/insert"
+# unrecognized functions/aliases hidden at level A, shown (with real defs) at level C
+printf '%s' "$C_A" | assert_not_contains "cmd A: unknown alias hidden"  "ll|user"
+printf '%s' "$C_A" | assert_not_contains "cmd A: unknown func hidden"   "myhelper|user"
+printf '%s' "$C_C" | assert_contains "cmd C: alias shows real def"      "ll|user|ls -l"
+printf '%s' "$C_C" | assert_contains "cmd C: alias gs shows real def"   "gs|user|git status"
+printf '%s' "$C_C" | assert_contains "cmd C: unknown func, empty action" "myhelper|user|"
+printf '%s' "$C_C" | assert_contains "cmd C: plain func shown as user"   "kbs|user"
+# recognized commands still present at level C
+printf '%s' "$C_C" | assert_contains "cmd C: z still recognized" "z|zoxide"
+# command count grows A <= C
+cca=$(printf '%s\n' "$C_A" | grep -c '|'); ccc=$(printf '%s\n' "$C_C" | grep -c '|')
+if [ "$cca" -lt "$ccc" ]; then ok; else bad "cmd level A($cca) < C($ccc)"; fi
+# table rendering: a Commands box with a Command column header
+printf '%s' "$T_A" | assert_contains "cmd table title"  "Commands"
+printf '%s' "$T_A" | assert_contains "cmd table header" "Command"
+printf '%s' "$T_A" | assert_contains "cmd table border" "┌"
+# Commands box is internally width-consistent (isolate the last box: from its top ┌)
+# shellcheck disable=SC2016  # $0/ORS are awk fields, not shell expansions
+CMDBOX=$(printf '%s\n' "$T_A" | "$AWK" '/^┌/{buf=""} {buf=buf $0 ORS} END{printf "%s",buf}')
+CW=$(printf '%s\n' "$CMDBOX" | grep -E '^[┌│├└]' | LC_ALL=C.UTF-8 "$AWK" '{print length}' | sort -u | wc -l)
+assert_eq "cmd box width-consistent" "1" "$CW"
+printf '%s' "$CMDBOX" | assert_contains "isolated box is the Commands box" "Commands -"
+# zoxide examples render when a zoxide command is present
+EX=$(cmd_dump | render table ble emacs A 0 1)
+printf '%s' "$EX" | assert_contains "cmd examples: zoxide example shown" "z foo"
 
 # grep -c already prints 0 (and exits 1) on no matches; capture directly.
 PASS=$(grep -c '^p' "$RESULTS"); FAIL=$(grep -c '^f' "$RESULTS")

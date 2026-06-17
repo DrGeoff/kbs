@@ -71,6 +71,10 @@ kbs() {
             printf '## readline -s\n'; bind -s 2>/dev/null
             printf '## readline -X\n'; bind -X 2>/dev/null
         fi
+        # Live commands: shell functions + aliases. Must run in-process (a child
+        # cannot see them) — the same reason kbs is a function, not a script.
+        printf '## functions\n'; compgen -A function 2>/dev/null
+        printf '## aliases\n';   alias 2>/dev/null
     } | awk -v rules="$rules" -v userrules="$userrules" \
             -v backend="$backend" -v keymap="$keymap" -v level="$level" \
             -v trigger="$trigger" -v color="$cnum" -v examples="$examples" \
@@ -117,6 +121,11 @@ DESCRIPTION
      reads the real keymap, the table can never silently drift from what your keys
      actually do.
 
+     A second "Commands" table lists typed commands the shell makes available —
+     live shell functions and aliases such as zoxide's z and zi — which are not
+     key bindings and so never appear in the keymap. Recognised commands get a
+     source and a human-readable action; the rest appear only under -vv.
+
 OPTIONS
      (no args)      Level A: non-default bindings plus synthetic rows.
      -l, --list     Explicit level A (the default).
@@ -141,6 +150,12 @@ RECOGNITION
      signature; its internal helper keys are hidden. ble.sh and readline widgets
      are matched by name. Classification is data-driven via rules.dat; unrecognised
      bindings show their raw target, never a guess.
+
+     Commands are read live with compgen -A function and alias, then matched by
+     exact name against cmd rules in rules.dat (e.g. z, zi -> zoxide). Internal
+     helpers (names starting with _, such as __zoxide_z) and framework namespaces
+     (ble/...) are hidden. Under -vv, unrecognised functions and aliases are also
+     listed as source "user"; an unrecognised alias shows its real definition.
 
 ENVIRONMENT
      FZF_COMPLETION_TRIGGER  The fzf completion trigger (default **).

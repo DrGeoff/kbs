@@ -1,0 +1,6 @@
+z
+zi
+__zoxide_z
+ble/widget/insert
+kbs
+myhelper

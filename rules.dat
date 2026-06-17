@@ -6,8 +6,11 @@
 # synth   | source | key          | action
 # builtin | key  | action
 # example | source | text
+# cmd     | type | name           | source          | action
 #
 # type: x=shell-cmd c=command s=macro f=widget/function   key: canonical (Ctrl-R, Up, ...)
+# cmd rows recognise live shell functions/aliases (type f=function a=alias); name is
+# matched exactly ('*' = any), first match wins. Unrecognised commands show only at -vv.
 # target/macro: substring tested against the binding's target.  action '@bykey' -> bykey table.
 
 # --- fzf ---
@@ -52,3 +55,10 @@ example | fzf  | cd **<Tab>       fuzzy-pick a sub-directory
 example | fzf  | ssh **<Tab>      fuzzy-pick a host
 example | fzf  | kill -9 **<Tab>  fuzzy-pick a process by PID
 example | atuin | Ctrl-R          search synced history; type to filter, Enter to run
+
+# --- zoxide (functions; no key bindings, so only the Commands table shows them) ---
+cmd     | f    | z           | zoxide | Jump to a "frecent" directory
+cmd     | f    | zi          | zoxide | Interactive directory pick (fzf-style menu)
+
+example | zoxide | z foo      jump to the frecent dir best matching "foo"
+example | zoxide | zi foo     interactive pick when several dirs match

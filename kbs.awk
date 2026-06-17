@@ -28,6 +28,8 @@ function load_rules(f,   line, _n, _a, k) {
       if (!(_a[2] in binact)) { binact[_a[2]] = _a[3]; bis[_a[2]] = 1 }
     } else if (_a[1] == "example") {
       en++; e_src[en]=_a[2]; e_text[en]=_a[3]
+    } else if (_a[1] == "cmd") {
+      cmdn++; c_type[cmdn]=_a[2]; c_name[cmdn]=_a[3]; c_src[cmdn]=_a[4]; c_act[cmdn]=_a[5]
     }
   }
   close(f)
@@ -123,8 +125,33 @@ function classify(_km, _ty, _key, _tgt,   _i) {
   CL_src="other"; CL_act="(internal)"
 }
 
+# Collect a live function/alias name into the command list (deduped).
+function collect_func(line,   nm) {
+  nm = trim(line)
+  if (nm == "" || (nm in Cseen)) return
+  Cseen[nm]=1; Cn++; Cnm[Cn]=nm; Ckd[Cn]="f"; Cdf[Cn]=""
+}
+function collect_alias(line,   s, p, nm) {
+  s = line; sub(/^alias[ \t]+/, "", s)
+  p = index(s, "="); if (!p) return
+  nm = substr(s, 1, p-1)
+  if (nm == "" || (nm in Cseen)) return
+  Cseen[nm]=1; Cn++; Cnm[Cn]=nm; Ckd[Cn]="a"; Cdf[Cn]=strip_quotes(substr(s, p+1))
+}
+
+# Classify a command against cmd rules. Sets CC_known, CC_src, CC_act.
+function classify_cmd(_nm, _kd, _df,   _i) {
+  for (_i = 1; _i <= cmdn; _i++) {
+    if (c_type[_i] != "" && c_type[_i] != "*" && c_type[_i] != _kd) continue
+    if (c_name[_i] != "" && c_name[_i] != "*" && c_name[_i] != _nm) continue
+    CC_known=1; CC_src=c_src[_i]; CC_act=c_act[_i]; return
+  }
+  CC_known=0; CC_src="user"; CC_act=(_kd == "a") ? _df : ""
+}
+
 BEGIN {
   rn = 0; sn = 0; en = 0; Wn = 0   # accumulator counts (explicit init keeps gawk --lint quiet)
+  cmdn = 0; Cn = 0; ncmd = 0       # cmd-rule, live-command, and rendered-command counts
   ARROW["A"]="Up"; ARROW["B"]="Down"; ARROW["C"]="Right"; ARROW["D"]="Left"; ARROW["F"]="End"; ARROW["H"]="Home"
   TILDE["1"]="Home"; TILDE["2"]="Insert"; TILDE["3"]="Delete"; TILDE["4"]="End"; TILDE["5"]="PageUp"; TILDE["6"]="PageDown"
   NAMED["up"]="Up"; NAMED["down"]="Down"; NAMED["left"]="Left"; NAMED["right"]="Right"
@@ -134,9 +161,11 @@ BEGIN {
   NAMED["sp"]="Space"; NAMED["esc"]="Escape"; NAMED["ret"]="Enter"
   RANK["s"]=0; RANK["x"]=1; RANK["c"]=2; RANK["f"]=3
   ORD["atuin"]=1; ORD["fzf"]=2; ORD["ble.sh"]=3; ORD["readline"]=4; ORD["shell"]=5; ORD["other"]=6
+  ORD["zoxide"]=7; ORD["user"]=8                          # command sources sort after key sources
   COLOR["atuin"]="\033[38;5;213m"; COLOR["fzf"]="\033[38;5;114m"
   COLOR["ble.sh"]="\033[38;5;75m"; COLOR["readline"]="\033[38;5;179m"
   COLOR["shell"]="\033[38;5;245m"; COLOR["other"]="\033[38;5;245m"
+  COLOR["zoxide"]="\033[38;5;215m"; COLOR["user"]="\033[38;5;245m"
   if (userrules != "") load_rules(userrules)
   load_rules(rules)
   KMFILTER = (backend == "readline") ? "readline" : keymap
@@ -146,12 +175,18 @@ BEGIN {
   n = split(substr($0, 4), a, /[ \t]+/)
   if (a[1] == "ble")      { SEC=1; SKIND="ble" }
   else if (a[1] == "readline") { SEC=1; SKIND="readline"; SFLAG=(n>=2?a[2]:"-p") }
+  else if (a[1] == "functions") { SEC=2; SKIND="func" }
+  else if (a[1] == "aliases")   { SEC=2; SKIND="alias" }
   else SEC=0
   next
 }
 /^[ \t]*$/ { next }
 {
   if (!SEC) next
+  if (SEC == 2) {
+    if (SKIND == "func") collect_func($0); else collect_alias($0)
+    next
+  }
   if (SKIND == "ble") { parse_ble($0); if (!P_ok) next }
   else                { parse_readline($0, SFLAG); if (!P_ok) next }
   key = canon(P_key)
@@ -194,9 +229,35 @@ END {
   for (i=1;i<=nr;i++){ nf++; fk[nf]=rk[i]; fs[nf]=rs[i]; fa[nf]=ra[i] }
   if (level == "C") for (i=1;i<=nsy;i++){ nf++; fk[nf]=yk[i]; fs[nf]=ys[i]; fa[nf]=ya[i] }
 
-  if (emit == "rows") { for (i=1;i<=nf;i++) print fk[i] "|" fs[i] "|" fa[i]; exit (nf>0?0:1) }
-  if (nf == 0) { print "kbs: no bindings found (no interactive keymap could be read)." > "/dev/stderr"; exit 1 }
-  render_table()
+  # command rows (functions + aliases): recognised always; unrecognised at level C
+  # only, and only if they survive the noise filter (no _-prefix, no namespace/).
+  ncmd = 0
+  for (i = 1; i <= Cn; i++) {
+    classify_cmd(Cnm[i], Ckd[i], Cdf[i])
+    if (!CC_known) {
+      if (level != "C") continue
+      if (Cnm[i] ~ /^_/ || index(Cnm[i], "/") > 0) continue
+    }
+    ncmd++; cmk[ncmd]=Cnm[i]; cms[ncmd]=CC_src; cma[ncmd]=CC_act
+  }
+  # insertion sort by (ORD[source], name)
+  for (i = 2; i <= ncmd; i++) {
+    kk=cmk[i]; ss=cms[i]; aa=cma[i]; oi=(cms[i] in ORD)?ORD[cms[i]]:99
+    j = i - 1
+    while (j >= 1 && ( (cms[j] in ORD ? ORD[cms[j]] : 99) > oi || ((cms[j] in ORD ? ORD[cms[j]] : 99) == oi && cmk[j] > kk) )) {
+      cmk[j+1]=cmk[j]; cms[j+1]=cms[j]; cma[j+1]=cma[j]; j--
+    }
+    cmk[j+1]=kk; cms[j+1]=ss; cma[j+1]=aa
+  }
+
+  if (emit == "rows") {
+    for (i=1;i<=nf;i++)   print fk[i]  "|" fs[i]  "|" fa[i]
+    for (i=1;i<=ncmd;i++) print cmk[i] "|" cms[i] "|" cma[i]
+    exit ((nf+ncmd) > 0 ? 0 : 1)
+  }
+  if (nf == 0 && ncmd == 0) { print "kbs: no bindings found (no interactive keymap could be read)." > "/dev/stderr"; exit 1 }
+  if (nf > 0) render_table()
+  if (ncmd > 0) render_cmd_table()
   if (examples == 1) render_examples()
 }
 
@@ -233,11 +294,37 @@ function render_table(   _i, kw, sw, aw, total, B, R, sc, title, lvltext, tl) {
   }
   print "└" rep(kw+2,"─") "┴" rep(sw+2,"─") "┴" rep(aw+2,"─") "┘"
 }
+function render_cmd_table(   _i, kw, sw, aw, total, B, R, sc, title, tl) {
+  B = (color == 1) ? "\033[1m" : ""
+  R = (color == 1) ? "\033[0m" : ""
+  title = "Commands - type these (functions & aliases)"
+  kw = length("Command"); sw = length("Source"); aw = length("Action")
+  for (_i = 1; _i <= ncmd; _i++) {
+    if (length(cmk[_i]) > kw) kw = length(cmk[_i])
+    if (length(cms[_i]) > sw) sw = length(cms[_i])
+    if (length(cma[_i]) > aw) aw = length(cma[_i])
+  }
+  total = kw + sw + aw + 8
+  tl = length(title)
+  if (tl + 2 > total) { aw += tl + 2 - total; total = kw + sw + aw + 8 }
+  print ""
+  print "┌" rep(total, "─") "┐"
+  print "│ " B pad(title, total - 2) R " │"
+  print "├" rep(kw+2,"─") "┬" rep(sw+2,"─") "┬" rep(aw+2,"─") "┤"
+  print "│ " B pad("Command", kw) R " │ " B pad("Source", sw) R " │ " B pad("Action", aw) R " │"
+  print "├" rep(kw+2,"─") "┼" rep(sw+2,"─") "┼" rep(aw+2,"─") "┤"
+  for (_i = 1; _i <= ncmd; _i++) {
+    sc = (color == 1 && (cms[_i] in COLOR)) ? COLOR[cms[_i]] : ""
+    print "│ " B pad(cmk[_i], kw) R " │ " sc pad(cms[_i], sw) R " │ " pad(cma[_i], aw) " │"
+  }
+  print "└" rep(kw+2,"─") "┴" rep(sw+2,"─") "┴" rep(aw+2,"─") "┘"
+}
 function render_examples(   _i, DIM, B, R, present, has) {
   DIM = (color == 1) ? "\033[2m" : ""
   B   = (color == 1) ? "\033[1m" : ""
   R   = (color == 1) ? "\033[0m" : ""
   for (_i = 1; _i <= nf; _i++) present[fs[_i]] = 1
+  for (_i = 1; _i <= ncmd; _i++) present[cms[_i]] = 1
   has = 0
   for (_i = 1; _i <= en; _i++) if (e_src[_i] in present) { has = 1; break }
   if (!has) return
