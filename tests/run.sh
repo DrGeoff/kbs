@@ -185,6 +185,8 @@ C_A=$(cmd_dump | render rows ble emacs A 0 0)
 C_C=$(cmd_dump | render rows ble emacs C 0 0)
 T_A=$(cmd_dump | render table ble emacs A 0 0)
 
+# the synthetic fzf trigger row must NOT appear when fzf is absent (cmd_dump has no fzf)
+printf '%s' "$C_A" | assert_not_contains "synth: no fzf trigger when fzf absent" "**<Tab>"
 # recognized zoxide commands show at every level
 printf '%s' "$C_A" | assert_contains "cmd: z recognized as zoxide"  "z|zoxide"
 printf '%s' "$C_A" | assert_contains "cmd: zi recognized as zoxide" "zi|zoxide"
@@ -217,6 +219,8 @@ printf '%s' "$CMDBOX" | assert_contains "isolated box is the Commands box" "Comm
 # zoxide examples render when a zoxide command is present
 EX=$(cmd_dump | render table ble emacs A 0 1)
 printf '%s' "$EX" | assert_contains "cmd examples: zoxide example shown" "z foo"
+# but the fzf-specific examples-header clause must not appear when fzf is absent
+printf '%s' "$EX" | assert_not_contains "examples header omits fzf when absent" "where you'd hit Tab"
 
 # grep -c already prints 0 (and exits 1) on no matches; capture directly.
 PASS=$(grep -c '^p' "$RESULTS"); FAIL=$(grep -c '^f' "$RESULTS")

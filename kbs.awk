@@ -220,15 +220,6 @@ END {
     }
     rk[j+1]=kk; rs[j+1]=ss; ra[j+1]=aa
   }
-  # synthetic rows
-  nsy = 0
-  for (i = 1; i <= sn; i++) { sk = s_key[i]; gsub(/\{trigger\}/, trigger, sk); nsy++; yk[nsy]=sk; ys[nsy]=s_src[i]; ya[nsy]=s_act[i] }
-  # final order: synthetic first (A/B), last (C)
-  nf = 0
-  if (level != "C") for (i=1;i<=nsy;i++){ nf++; fk[nf]=yk[i]; fs[nf]=ys[i]; fa[nf]=ya[i] }
-  for (i=1;i<=nr;i++){ nf++; fk[nf]=rk[i]; fs[nf]=rs[i]; fa[nf]=ra[i] }
-  if (level == "C") for (i=1;i<=nsy;i++){ nf++; fk[nf]=yk[i]; fs[nf]=ys[i]; fa[nf]=ya[i] }
-
   # command rows (functions + aliases): recognised always; unrecognised at level C
   # only, and only if they survive the noise filter (no _-prefix, no namespace/).
   ncmd = 0
@@ -249,6 +240,24 @@ END {
     }
     cmk[j+1]=kk; cms[j+1]=ss; cma[j+1]=aa
   }
+
+  # Which sources actually appear, from real key bindings and commands. Synthetic
+  # rows (e.g. fzf's ** trigger) are not real bindings, so gate them on this — never
+  # advertise a tool that is not loaded.
+  for (i = 1; i <= nr; i++)   srcpresent[rs[i]] = 1
+  for (i = 1; i <= ncmd; i++) srcpresent[cms[i]] = 1
+
+  # synthetic rows (skipped when their source is absent)
+  nsy = 0
+  for (i = 1; i <= sn; i++) {
+    if (!(s_src[i] in srcpresent)) continue
+    sk = s_key[i]; gsub(/\{trigger\}/, trigger, sk); nsy++; yk[nsy]=sk; ys[nsy]=s_src[i]; ya[nsy]=s_act[i]
+  }
+  # final order: synthetic first (A/B), last (C)
+  nf = 0
+  if (level != "C") for (i=1;i<=nsy;i++){ nf++; fk[nf]=yk[i]; fs[nf]=ys[i]; fa[nf]=ya[i] }
+  for (i=1;i<=nr;i++){ nf++; fk[nf]=rk[i]; fs[nf]=rs[i]; fa[nf]=ra[i] }
+  if (level == "C") for (i=1;i<=nsy;i++){ nf++; fk[nf]=yk[i]; fs[nf]=ys[i]; fa[nf]=ya[i] }
 
   if (emit == "rows") {
     for (i=1;i<=nf;i++)   print fk[i]  "|" fs[i]  "|" fa[i]
@@ -329,6 +338,10 @@ function render_examples(   _i, DIM, B, R, present, has) {
   for (_i = 1; _i <= en; _i++) if (e_src[_i] in present) { has = 1; break }
   if (!has) return
   print ""
-  print B "Examples" R DIM "  - fzf " trigger " trigger: type " trigger " where you'd hit Tab" R
+  # the fzf trigger note is fzf-specific — only show it when fzf is actually present
+  if ("fzf" in present)
+    print B "Examples" R DIM "  - fzf " trigger " trigger: type " trigger " where you'd hit Tab" R
+  else
+    print B "Examples" R
   for (_i = 1; _i <= en; _i++) if (e_src[_i] in present) print "  " DIM e_text[_i] R
 }
