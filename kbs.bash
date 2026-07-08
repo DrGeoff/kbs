@@ -162,12 +162,20 @@ ENVIRONMENT
      NO_COLOR                If set, disables colour.
      PAGER                   Pager used for --man (default: less -R).
 
+EOF
+    # FILES reflects wherever this copy actually lives (~/.local/lib/kbs for a
+    # default install, a read-only module prefix, a git checkout, ...) — the same
+    # sibling resolution kbs() itself uses. Unquoted heredoc: $here expands.
+    local here="${BASH_SOURCE[0]%/*}"
+    cat <<EOF
 FILES
-     ~/.local/lib/kbs/kbs.bash   The kbs() shell function (live capture).
-     ~/.local/lib/kbs/kbs.awk    The renderer.
-     ~/.local/lib/kbs/rules.dat  Default recognition + teaching rules.
-     ~/.config/kbs/rules.dat     Optional user overrides (consulted first).
+     $here/kbs.bash    The kbs() shell function (live capture).
+     $here/kbs.awk     The renderer.
+     $here/rules.dat   Default recognition + teaching rules.
+     ~/.config/kbs/rules.dat  Optional user overrides (consulted first).
 
+EOF
+    cat <<'EOF'
 EXIT STATUS
      0 on success; non-zero if no keymap could be read.
 

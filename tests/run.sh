@@ -124,6 +124,11 @@ printf '%s' "$MAN"  | assert_contains "man NAME"        "NAME"
 printf '%s' "$MAN"  | assert_contains "man SYNOPSIS"    "SYNOPSIS"
 printf '%s' "$MAN"  | assert_contains "man RECOGNITION" "RECOGNITION"
 printf '%s' "$MAN"  | assert_contains "man FILES"       "FILES"
+# FILES must show where this copy actually lives, not a hardcoded install path
+# (issue #1). The harness sources from $ROOT, so $here resolves to $ROOT.
+printf '%s' "$MAN"  | assert_contains     "man FILES shows real dir"    "$ROOT/kbs.awk"
+# shellcheck disable=SC2088  # intentional literal tilde: we're checking it doesn't appear
+printf '%s' "$MAN"  | assert_not_contains "man FILES not hardcoded"     '~/.local/lib/kbs/'
 # unknown option exits 2
 bash -c "source '$ROOT/kbs.bash'; kbs --bogus" >/dev/null 2>&1
 assert_eq "unknown option exits 2" "2" "$?"
